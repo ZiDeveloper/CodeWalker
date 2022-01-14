@@ -1,6 +1,11 @@
+# 🍴 This is a Fork
+This repository contains personal features and changes made to [CodeWalker](https://github.com/dexyfex/CodeWalker).
+
+Make sure to get familar with the original version first before using this one.
+
 
 # ﻿CodeWalker by dexyfex
-----------------------
+-------------------------
 
 # This program is for viewing the contents of GTAV RPF archives.
 
