@@ -223,6 +223,7 @@ namespace CodeWalker
             this.ToolsMenuSelectionInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsMenuProjectWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsMenuCutsceneViewer = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolsMenuAudioExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsMenuWorldSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsMenuBinarySearch = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsMenuJenkGen = new System.Windows.Forms.ToolStripMenuItem();
@@ -310,7 +311,6 @@ namespace CodeWalker
             this.ToolbarPanel = new System.Windows.Forms.Panel();
             this.SubtitleLabel = new System.Windows.Forms.Label();
             this.SubtitleTimer = new System.Windows.Forms.Timer(this.components);
-            this.ToolsMenuAudioExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusStrip.SuspendLayout();
             this.ToolsPanel.SuspendLayout();
             this.ToolsTabControl.SuspendLayout();
@@ -453,11 +453,10 @@ namespace CodeWalker
             this.ToolsPanel.Controls.Add(this.ToolsPanelExpandButton);
             this.ToolsPanel.Controls.Add(this.ToolsTabControl);
             this.ToolsPanel.Controls.Add(this.ToolsPanelHideButton);
-            this.ToolsPanel.Location = new System.Drawing.Point(754, 12);
+            this.ToolsPanel.Location = new System.Drawing.Point(708, 12);
             this.ToolsPanel.Name = "ToolsPanel";
-            this.ToolsPanel.Size = new System.Drawing.Size(218, 665);
+            this.ToolsPanel.Size = new System.Drawing.Size(264, 665);
             this.ToolsPanel.TabIndex = 2;
-            this.ToolsPanel.Visible = false;
             // 
             // ToolsDragPanel
             // 
@@ -495,7 +494,7 @@ namespace CodeWalker
             // ToolsPanelExpandButton
             // 
             this.ToolsPanelExpandButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ToolsPanelExpandButton.Location = new System.Drawing.Point(149, 3);
+            this.ToolsPanelExpandButton.Location = new System.Drawing.Point(195, 3);
             this.ToolsPanelExpandButton.Name = "ToolsPanelExpandButton";
             this.ToolsPanelExpandButton.Size = new System.Drawing.Size(30, 23);
             this.ToolsPanelExpandButton.TabIndex = 13;
@@ -515,7 +514,7 @@ namespace CodeWalker
             this.ToolsTabControl.Location = new System.Drawing.Point(3, 30);
             this.ToolsTabControl.Name = "ToolsTabControl";
             this.ToolsTabControl.SelectedIndex = 0;
-            this.ToolsTabControl.Size = new System.Drawing.Size(213, 632);
+            this.ToolsTabControl.Size = new System.Drawing.Size(259, 632);
             this.ToolsTabControl.TabIndex = 12;
             // 
             // ViewTabPage
@@ -527,7 +526,7 @@ namespace CodeWalker
             this.ViewTabPage.Location = new System.Drawing.Point(4, 22);
             this.ViewTabPage.Name = "ViewTabPage";
             this.ViewTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ViewTabPage.Size = new System.Drawing.Size(205, 606);
+            this.ViewTabPage.Size = new System.Drawing.Size(251, 606);
             this.ViewTabPage.TabIndex = 0;
             this.ViewTabPage.Text = "View";
             this.ViewTabPage.UseVisualStyleBackColor = true;
@@ -543,7 +542,7 @@ namespace CodeWalker
             this.ViewTabControl.Location = new System.Drawing.Point(0, 32);
             this.ViewTabControl.Name = "ViewTabControl";
             this.ViewTabControl.SelectedIndex = 0;
-            this.ViewTabControl.Size = new System.Drawing.Size(202, 548);
+            this.ViewTabControl.Size = new System.Drawing.Size(248, 548);
             this.ViewTabControl.TabIndex = 12;
             // 
             // ViewWorldTabPage
@@ -566,7 +565,7 @@ namespace CodeWalker
             this.ViewWorldTabPage.Location = new System.Drawing.Point(4, 22);
             this.ViewWorldTabPage.Name = "ViewWorldTabPage";
             this.ViewWorldTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ViewWorldTabPage.Size = new System.Drawing.Size(194, 522);
+            this.ViewWorldTabPage.Size = new System.Drawing.Size(240, 522);
             this.ViewWorldTabPage.TabIndex = 0;
             this.ViewWorldTabPage.Text = "World";
             this.ViewWorldTabPage.UseVisualStyleBackColor = true;
@@ -684,7 +683,7 @@ namespace CodeWalker
             this.WorldDetailDistTrackBar.Location = new System.Drawing.Point(6, 110);
             this.WorldDetailDistTrackBar.Maximum = 50;
             this.WorldDetailDistTrackBar.Name = "WorldDetailDistTrackBar";
-            this.WorldDetailDistTrackBar.Size = new System.Drawing.Size(182, 45);
+            this.WorldDetailDistTrackBar.Size = new System.Drawing.Size(228, 45);
             this.WorldDetailDistTrackBar.TabIndex = 62;
             this.WorldDetailDistTrackBar.TickFrequency = 2;
             this.WorldDetailDistTrackBar.Value = 10;
@@ -719,7 +718,7 @@ namespace CodeWalker
             this.WorldLodDistTrackBar.Location = new System.Drawing.Point(6, 55);
             this.WorldLodDistTrackBar.Maximum = 30;
             this.WorldLodDistTrackBar.Name = "WorldLodDistTrackBar";
-            this.WorldLodDistTrackBar.Size = new System.Drawing.Size(182, 45);
+            this.WorldLodDistTrackBar.Size = new System.Drawing.Size(228, 45);
             this.WorldLodDistTrackBar.TabIndex = 59;
             this.WorldLodDistTrackBar.TickFrequency = 2;
             this.WorldLodDistTrackBar.Value = 10;
@@ -1305,6 +1304,8 @@ namespace CodeWalker
             // MouseSelectCheckBox
             // 
             this.MouseSelectCheckBox.AutoSize = true;
+            this.MouseSelectCheckBox.Checked = true;
+            this.MouseSelectCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MouseSelectCheckBox.Location = new System.Drawing.Point(8, 7);
             this.MouseSelectCheckBox.Name = "MouseSelectCheckBox";
             this.MouseSelectCheckBox.Size = new System.Drawing.Size(143, 17);
@@ -1312,8 +1313,6 @@ namespace CodeWalker
             this.MouseSelectCheckBox.Text = "Mouse select (right click)";
             this.MouseSelectCheckBox.UseVisualStyleBackColor = true;
             this.MouseSelectCheckBox.CheckedChanged += new System.EventHandler(this.MouseSelectCheckBox_CheckedChanged);
-            this.MouseSelectCheckBox.Checked = true;
-            this.MouseSelectCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             // 
             // OptionsTabPage
             // 
@@ -2662,7 +2661,7 @@ namespace CodeWalker
             // ToolsPanelHideButton
             // 
             this.ToolsPanelHideButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ToolsPanelHideButton.Location = new System.Drawing.Point(185, 3);
+            this.ToolsPanelHideButton.Location = new System.Drawing.Point(231, 3);
             this.ToolsPanelHideButton.Name = "ToolsPanelHideButton";
             this.ToolsPanelHideButton.Size = new System.Drawing.Size(30, 23);
             this.ToolsPanelHideButton.TabIndex = 4;
@@ -2689,7 +2688,7 @@ namespace CodeWalker
             this.ConsolePanel.Controls.Add(this.ConsoleTextBox);
             this.ConsolePanel.Location = new System.Drawing.Point(12, 576);
             this.ConsolePanel.Name = "ConsolePanel";
-            this.ConsolePanel.Size = new System.Drawing.Size(736, 101);
+            this.ConsolePanel.Size = new System.Drawing.Size(690, 101);
             this.ConsolePanel.TabIndex = 3;
             this.ConsolePanel.Visible = false;
             // 
@@ -2702,7 +2701,7 @@ namespace CodeWalker
             this.ConsoleTextBox.Multiline = true;
             this.ConsoleTextBox.Name = "ConsoleTextBox";
             this.ConsoleTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.ConsoleTextBox.Size = new System.Drawing.Size(730, 95);
+            this.ConsoleTextBox.Size = new System.Drawing.Size(684, 95);
             this.ConsoleTextBox.TabIndex = 0;
             // 
             // StatsUpdateTimer
@@ -2766,12 +2765,12 @@ namespace CodeWalker
             this.ToolsMenuExtractShaders,
             this.ToolsMenuOptions});
             this.ToolsMenu.Name = "ToolsMenu";
-            this.ToolsMenu.Size = new System.Drawing.Size(181, 356);
+            this.ToolsMenu.Size = new System.Drawing.Size(170, 334);
             // 
             // ToolsMenuRPFBrowser
             // 
             this.ToolsMenuRPFBrowser.Name = "ToolsMenuRPFBrowser";
-            this.ToolsMenuRPFBrowser.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuRPFBrowser.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuRPFBrowser.Text = "RPF Browser...";
             this.ToolsMenuRPFBrowser.Visible = false;
             this.ToolsMenuRPFBrowser.Click += new System.EventHandler(this.ToolsMenuRPFBrowser_Click);
@@ -2779,14 +2778,14 @@ namespace CodeWalker
             // ToolsMenuRPFExplorer
             // 
             this.ToolsMenuRPFExplorer.Name = "ToolsMenuRPFExplorer";
-            this.ToolsMenuRPFExplorer.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuRPFExplorer.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuRPFExplorer.Text = "RPF Explorer...";
             this.ToolsMenuRPFExplorer.Click += new System.EventHandler(this.ToolsMenuRPFExplorer_Click);
             // 
             // ToolsMenuSelectionInfo
             // 
             this.ToolsMenuSelectionInfo.Name = "ToolsMenuSelectionInfo";
-            this.ToolsMenuSelectionInfo.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuSelectionInfo.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuSelectionInfo.Text = "Selection info...";
             this.ToolsMenuSelectionInfo.Click += new System.EventHandler(this.ToolsMenuSelectionInfo_Click);
             // 
@@ -2794,7 +2793,7 @@ namespace CodeWalker
             // 
             this.ToolsMenuProjectWindow.Enabled = false;
             this.ToolsMenuProjectWindow.Name = "ToolsMenuProjectWindow";
-            this.ToolsMenuProjectWindow.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuProjectWindow.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuProjectWindow.Text = "Project window...";
             this.ToolsMenuProjectWindow.Click += new System.EventHandler(this.ToolsMenuProjectWindow_Click);
             // 
@@ -2802,14 +2801,22 @@ namespace CodeWalker
             // 
             this.ToolsMenuCutsceneViewer.Enabled = false;
             this.ToolsMenuCutsceneViewer.Name = "ToolsMenuCutsceneViewer";
-            this.ToolsMenuCutsceneViewer.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuCutsceneViewer.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuCutsceneViewer.Text = "Cutscene viewer...";
             this.ToolsMenuCutsceneViewer.Click += new System.EventHandler(this.ToolsMenuCutsceneViewer_Click);
+            // 
+            // ToolsMenuAudioExplorer
+            // 
+            this.ToolsMenuAudioExplorer.Enabled = false;
+            this.ToolsMenuAudioExplorer.Name = "ToolsMenuAudioExplorer";
+            this.ToolsMenuAudioExplorer.Size = new System.Drawing.Size(169, 22);
+            this.ToolsMenuAudioExplorer.Text = "Audio explorer...";
+            this.ToolsMenuAudioExplorer.Click += new System.EventHandler(this.ToolsMenuAudioExplorer_Click);
             // 
             // ToolsMenuWorldSearch
             // 
             this.ToolsMenuWorldSearch.Name = "ToolsMenuWorldSearch";
-            this.ToolsMenuWorldSearch.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuWorldSearch.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuWorldSearch.Text = "World search...";
             this.ToolsMenuWorldSearch.Click += new System.EventHandler(this.ToolsMenuWorldSearch_Click);
             // 
@@ -2817,14 +2824,14 @@ namespace CodeWalker
             // 
             this.ToolsMenuBinarySearch.Enabled = false;
             this.ToolsMenuBinarySearch.Name = "ToolsMenuBinarySearch";
-            this.ToolsMenuBinarySearch.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuBinarySearch.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuBinarySearch.Text = "Binary search...";
             this.ToolsMenuBinarySearch.Click += new System.EventHandler(this.ToolsMenuBinarySearch_Click);
             // 
             // ToolsMenuJenkGen
             // 
             this.ToolsMenuJenkGen.Name = "ToolsMenuJenkGen";
-            this.ToolsMenuJenkGen.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuJenkGen.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuJenkGen.Text = "JenkGen...";
             this.ToolsMenuJenkGen.Click += new System.EventHandler(this.ToolsMenuJenkGen_Click);
             // 
@@ -2832,42 +2839,42 @@ namespace CodeWalker
             // 
             this.ToolsMenuJenkInd.Enabled = false;
             this.ToolsMenuJenkInd.Name = "ToolsMenuJenkInd";
-            this.ToolsMenuJenkInd.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuJenkInd.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuJenkInd.Text = "JenkInd...";
             this.ToolsMenuJenkInd.Click += new System.EventHandler(this.ToolsMenuJenkInd_Click);
             // 
             // ToolsMenuExtractScripts
             // 
             this.ToolsMenuExtractScripts.Name = "ToolsMenuExtractScripts";
-            this.ToolsMenuExtractScripts.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuExtractScripts.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuExtractScripts.Text = "Extract scripts...";
             this.ToolsMenuExtractScripts.Click += new System.EventHandler(this.ToolsMenuExtractScripts_Click);
             // 
             // ToolsMenuExtractTextures
             // 
             this.ToolsMenuExtractTextures.Name = "ToolsMenuExtractTextures";
-            this.ToolsMenuExtractTextures.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuExtractTextures.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuExtractTextures.Text = "Extract textures...";
             this.ToolsMenuExtractTextures.Click += new System.EventHandler(this.ToolsMenuExtractTextures_Click);
             // 
             // ToolsMenuExtractRawFiles
             // 
             this.ToolsMenuExtractRawFiles.Name = "ToolsMenuExtractRawFiles";
-            this.ToolsMenuExtractRawFiles.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuExtractRawFiles.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuExtractRawFiles.Text = "Extract raw files...";
             this.ToolsMenuExtractRawFiles.Click += new System.EventHandler(this.ToolsMenuExtractRawFiles_Click);
             // 
             // ToolsMenuExtractShaders
             // 
             this.ToolsMenuExtractShaders.Name = "ToolsMenuExtractShaders";
-            this.ToolsMenuExtractShaders.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuExtractShaders.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuExtractShaders.Text = "Extract shaders...";
             this.ToolsMenuExtractShaders.Click += new System.EventHandler(this.ToolsMenuExtractShaders_Click);
             // 
             // ToolsMenuOptions
             // 
             this.ToolsMenuOptions.Name = "ToolsMenuOptions";
-            this.ToolsMenuOptions.Size = new System.Drawing.Size(180, 22);
+            this.ToolsMenuOptions.Size = new System.Drawing.Size(169, 22);
             this.ToolsMenuOptions.Text = "Options...";
             this.ToolsMenuOptions.Click += new System.EventHandler(this.ToolsMenuOptions_Click);
             // 
@@ -3572,7 +3579,6 @@ namespace CodeWalker
             this.ToolbarPanel.Name = "ToolbarPanel";
             this.ToolbarPanel.Size = new System.Drawing.Size(557, 26);
             this.ToolbarPanel.TabIndex = 7;
-            this.ToolbarPanel.Visible = true;
             // 
             // SubtitleLabel
             // 
@@ -3593,14 +3599,6 @@ namespace CodeWalker
             // SubtitleTimer
             // 
             this.SubtitleTimer.Tick += new System.EventHandler(this.SubtitleTimer_Tick);
-            // 
-            // ToolsMenuAudioExplorer
-            // 
-            this.ToolsMenuAudioExplorer.Enabled = false;
-            this.ToolsMenuAudioExplorer.Name = "ToolsMenuAudioExplorer";
-            this.ToolsMenuAudioExplorer.Size = new System.Drawing.Size(180, 22);
-            this.ToolsMenuAudioExplorer.Text = "Audio explorer...";
-            this.ToolsMenuAudioExplorer.Click += new System.EventHandler(this.ToolsMenuAudioExplorer_Click);
             // 
             // WorldForm
             // 
