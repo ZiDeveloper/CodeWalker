@@ -3,6 +3,9 @@ This repository contains personal features and changes made to [CodeWalker](http
 
 Make sure to get familar with the original version first before using this one.
 
+o [Changelog](https://github.com/ZiDeveloper/CodeWalker/commits?author=ZiDeveloper)
+
+o [Roadmap](https://github.com/ZiDeveloper/CodeWalker/projects)
 
 # ﻿CodeWalker by dexyfex
 -------------------------
