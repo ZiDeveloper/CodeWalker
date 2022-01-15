@@ -878,6 +878,8 @@ namespace CodeWalker
             // 
             this.ShowToolbarCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ShowToolbarCheckBox.AutoSize = true;
+            this.ShowToolbarCheckBox.Checked = true;
+            this.ShowToolbarCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ShowToolbarCheckBox.Location = new System.Drawing.Point(10, 586);
             this.ShowToolbarCheckBox.Name = "ShowToolbarCheckBox";
             this.ShowToolbarCheckBox.Size = new System.Drawing.Size(108, 17);
@@ -3570,7 +3572,7 @@ namespace CodeWalker
             this.ToolbarPanel.Name = "ToolbarPanel";
             this.ToolbarPanel.Size = new System.Drawing.Size(557, 26);
             this.ToolbarPanel.TabIndex = 7;
-            this.ToolbarPanel.Visible = false;
+            this.ToolbarPanel.Visible = true;
             // 
             // SubtitleLabel
             // 
