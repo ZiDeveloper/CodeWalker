@@ -48,6 +48,7 @@ namespace CodeWalker
 
         bool MouseLButtonDown = false;
         bool MouseRButtonDown = false;
+        bool MouseMButtonDown = false;
         int MouseX;
         int MouseY;
         System.Drawing.Point MouseDownPoint;
@@ -5831,6 +5832,7 @@ namespace CodeWalker
             {
                 case MouseButtons.Left: MouseLButtonDown = true; break;
                 case MouseButtons.Right: MouseRButtonDown = true; break;
+                case MouseButtons.Middle: MouseMButtonDown = true; break;
             }
 
             if (!ToolsPanelShowButton.Focused)
@@ -5918,6 +5920,11 @@ namespace CodeWalker
 
             MouseX = e.X; //to stop jumps happening on mousedown, sometimes the last MouseMove event was somewhere else... (eg after clicked a menu)
             MouseY = e.Y;
+
+            if (e.Button == MouseButtons.Middle) 
+            {
+                WorldForm_MouseMiddleDown(sender, e);
+            }
         }
 
         private void WorldForm_MouseUp(object sender, MouseEventArgs e)
@@ -5926,6 +5933,7 @@ namespace CodeWalker
             {
                 case MouseButtons.Left: MouseLButtonDown = false; break;
                 case MouseButtons.Right: MouseRButtonDown = false; break;
+                case MouseButtons.Middle: MouseMButtonDown = false; break;
             }
 
             Input.CtrlPressed = (ModifierKeys & Keys.Control) > 0;
@@ -5957,6 +5965,21 @@ namespace CodeWalker
                 ControlBrushTimer = 0;
             }
 
+            if (e.Button == MouseButtons.Middle)
+            {
+                WorldForm_MouseMiddleUp(sender, e);
+            }
+
+        }
+
+        private void WorldForm_MouseMiddleDown(object sender, MouseEventArgs e)
+        {
+            // add code here
+        }
+
+        private void WorldForm_MouseMiddleUp(object sender, MouseEventArgs e)
+        {
+            // add code here
         }
 
         private void WorldForm_MouseMove(object sender, MouseEventArgs e)
