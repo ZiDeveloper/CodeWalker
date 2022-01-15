@@ -152,7 +152,7 @@ namespace CodeWalker
         int MapViewDragY = 0;
 
 
-        bool MouseSelectEnabled = false;
+        bool MouseSelectEnabled = true;
         bool ShowSelectionBounds = true;
         bool SelectByGeometry = false; //select by geometry needs more work 
         MapSelection CurMouseHit = new MapSelection();

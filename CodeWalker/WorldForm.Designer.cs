@@ -1310,6 +1310,8 @@ namespace CodeWalker
             this.MouseSelectCheckBox.Text = "Mouse select (right click)";
             this.MouseSelectCheckBox.UseVisualStyleBackColor = true;
             this.MouseSelectCheckBox.CheckedChanged += new System.EventHandler(this.MouseSelectCheckBox_CheckedChanged);
+            this.MouseSelectCheckBox.Checked = true;
+            this.MouseSelectCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             // 
             // OptionsTabPage
             // 
