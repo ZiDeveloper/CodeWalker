@@ -4312,8 +4312,16 @@ namespace CodeWalker
             if (!camera.IsOrbit) { camera.IsOrbit = true; }
 
             // Adjust Zoom
-            camera.TargetDistance = selZoom;
-            camera.CurrentDistance = selZoom;
+            if (AdjustZoomCheckBox.Checked)
+            {
+                camera.TargetDistance = selZoom;
+                if (DisableZoomFadeEffectCheckBox.Checked) { camera.CurrentDistance = selZoom; }
+            }
+            else
+            {
+                camera.TargetDistance = camera.PastDistance;
+                if (DisableZoomFadeEffectCheckBox.Checked) { camera.CurrentDistance = camera.PastDistance; }
+            }
         }
 
 
@@ -4852,7 +4860,9 @@ namespace CodeWalker
             Renderer.individualcloudfrag = s.Clouds;
             NaturalAmbientLightCheckBox.Checked = s.NatrualAmbientLight;
             ArtificialAmbientLightCheckBox.Checked = s.ArtificialAmbientLight;
-            
+            AdjustZoomCheckBox.Checked = s.AdjustZoom;
+            DisableZoomFadeEffectCheckBox.Checked = s.ZoomFadeEffect;
+
             SetTimeOfDay(s.TimeOfDay);
             Renderer.SetWeatherType(s.Weather);
             
@@ -4900,6 +4910,8 @@ namespace CodeWalker
             s.ArtificialAmbientLight = ArtificialAmbientLightCheckBox.Checked;
             s.Region = WeatherRegionComboBox.Text;
             s.Clouds = CloudsComboBox.Text;
+            s.AdjustZoom = AdjustZoomCheckBox.Checked;
+            s.ZoomFadeEffect = DisableZoomFadeEffectCheckBox.Checked;
 
             //additional settings from gamefilecache...
             s.EnableMods = gameFileCache.EnableMods;
@@ -6340,6 +6352,10 @@ namespace CodeWalker
                 if (ControlMode == WorldControlMode.Free || ControlBrushEnabled)
                 {
                     camera.MouseZoom(e.Delta);
+                    if (!AdjustZoomCheckBox.Checked && camera.IsOrbit)
+                    {
+                        camera.PastDistance = camera.TargetDistance;
+                    }
                 }
                 else
                 {

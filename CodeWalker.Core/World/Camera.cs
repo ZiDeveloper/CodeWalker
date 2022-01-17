@@ -16,6 +16,7 @@ namespace CodeWalker.World
         public float MovementSpeed = 1.0f;
         public float TargetDistance = 0.0f;
         public float CurrentDistance = 0.0f;
+        public float PastDistance = 8.0f;
         public float ZoomCurrentTime = 0.0f;
         public float ZoomTargetTime = 2.0f;
         public float ZoomVelocity = 0.0f;
