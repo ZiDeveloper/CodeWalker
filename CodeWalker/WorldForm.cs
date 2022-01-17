@@ -521,6 +521,15 @@ namespace CodeWalker
 
                 Vector3 movevec = Input.KeyboardMoveVec(MapViewEnabled);
 
+                // Exit Orbit when moving
+                if (camera.IsOrbit && !movevec.IsZero)
+                {
+                    camera.IsOrbit = false;
+                    camera.TargetDistance = 0.0f;
+                    camera.CurrentDistance = 0.0f;
+                    camEntity.Position = camera.Position;
+                }
+
                 if (Input.xbenable)
                 {
                     movevec.X += Input.xblx;
@@ -547,8 +556,12 @@ namespace CodeWalker
                 }
                 else
                 {
-                    //normal movement
-                    movevec *= elapsed * moveSpeed * Math.Min(camera.TargetDistance, 20.0f);
+                    // Don't move when in Orbit
+                    if (!camera.IsOrbit)
+                    {
+                        //normal movement
+                        movevec *= elapsed * moveSpeed * Math.Min(camera.MovementSpeed, 20.0f);
+                    }
                 }
 
 
@@ -4523,12 +4536,17 @@ namespace CodeWalker
         public void GoToPosition(Vector3 p)
         {
             camera.FollowEntity.Position = p;
+            // Enter Orbit
+            if (!camera.IsOrbit) { camera.IsOrbit = true; }
         }
         public void GoToPosition(Vector3 p, Vector3 bound)
         {
             camera.FollowEntity.Position = p;
             var bl = bound.Length();
             camera.TargetDistance = bl > 1f ? bl : 1f;
+
+            // Enter Orbit
+            if (!camera.IsOrbit) { camera.IsOrbit = true; }
         }
 
         public MapMarker AddMarker(Vector3 pos, string name, bool addtotxtbox = false)
