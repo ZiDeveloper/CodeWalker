@@ -135,6 +135,8 @@ namespace CodeWalker
             this.FullScreenCheckBox = new System.Windows.Forms.CheckBox();
             this.TimedEntitiesCheckBox = new System.Windows.Forms.CheckBox();
             this.FieldOfViewTrackBar = new System.Windows.Forms.TrackBar();
+            this.DisableZoomFadeEffectCheckBox = new System.Windows.Forms.CheckBox();
+            this.AdjustZoomCheckBox = new System.Windows.Forms.CheckBox();
             this.OptionsRenderTabPage = new System.Windows.Forms.TabPage();
             this.FarClipUpDown = new System.Windows.Forms.NumericUpDown();
             this.label32 = new System.Windows.Forms.Label();
@@ -363,7 +365,7 @@ namespace CodeWalker
             this.StatusLabel,
             this.MousedLabel,
             this.StatsLabel});
-            this.StatusStrip.Location = new System.Drawing.Point(0, 689);
+            this.StatusStrip.Location = new System.Drawing.Point(0, 792);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Size = new System.Drawing.Size(984, 22);
             this.StatusStrip.TabIndex = 0;
@@ -437,7 +439,7 @@ namespace CodeWalker
             "sanchez_hi"});
             this.ModelComboBox.Location = new System.Drawing.Point(44, 7);
             this.ModelComboBox.Name = "ModelComboBox";
-            this.ModelComboBox.Size = new System.Drawing.Size(150, 21);
+            this.ModelComboBox.Size = new System.Drawing.Size(196, 21);
             this.ModelComboBox.TabIndex = 11;
             this.ModelComboBox.SelectedIndexChanged += new System.EventHandler(this.ModelComboBox_SelectedIndexChanged);
             this.ModelComboBox.TextUpdate += new System.EventHandler(this.ModelComboBox_TextUpdate);
@@ -455,7 +457,7 @@ namespace CodeWalker
             this.ToolsPanel.Controls.Add(this.ToolsPanelHideButton);
             this.ToolsPanel.Location = new System.Drawing.Point(708, 12);
             this.ToolsPanel.Name = "ToolsPanel";
-            this.ToolsPanel.Size = new System.Drawing.Size(264, 665);
+            this.ToolsPanel.Size = new System.Drawing.Size(264, 768);
             this.ToolsPanel.TabIndex = 2;
             // 
             // ToolsDragPanel
@@ -465,7 +467,7 @@ namespace CodeWalker
             this.ToolsDragPanel.Cursor = System.Windows.Forms.Cursors.VSplit;
             this.ToolsDragPanel.Location = new System.Drawing.Point(0, 0);
             this.ToolsDragPanel.Name = "ToolsDragPanel";
-            this.ToolsDragPanel.Size = new System.Drawing.Size(4, 665);
+            this.ToolsDragPanel.Size = new System.Drawing.Size(4, 768);
             this.ToolsDragPanel.TabIndex = 16;
             this.ToolsDragPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ToolsDragPanel_MouseDown);
             this.ToolsDragPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ToolsDragPanel_MouseMove);
@@ -514,7 +516,7 @@ namespace CodeWalker
             this.ToolsTabControl.Location = new System.Drawing.Point(3, 30);
             this.ToolsTabControl.Name = "ToolsTabControl";
             this.ToolsTabControl.SelectedIndex = 0;
-            this.ToolsTabControl.Size = new System.Drawing.Size(259, 632);
+            this.ToolsTabControl.Size = new System.Drawing.Size(259, 735);
             this.ToolsTabControl.TabIndex = 12;
             // 
             // ViewTabPage
@@ -763,7 +765,7 @@ namespace CodeWalker
             this.ViewYmapsTabPage.Location = new System.Drawing.Point(4, 22);
             this.ViewYmapsTabPage.Name = "ViewYmapsTabPage";
             this.ViewYmapsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ViewYmapsTabPage.Size = new System.Drawing.Size(194, 522);
+            this.ViewYmapsTabPage.Size = new System.Drawing.Size(240, 522);
             this.ViewYmapsTabPage.TabIndex = 1;
             this.ViewYmapsTabPage.Text = "Ymaps";
             this.ViewYmapsTabPage.UseVisualStyleBackColor = true;
@@ -797,7 +799,7 @@ namespace CodeWalker
             this.DetailTrackBar.Location = new System.Drawing.Point(6, 24);
             this.DetailTrackBar.Maximum = 20;
             this.DetailTrackBar.Name = "DetailTrackBar";
-            this.DetailTrackBar.Size = new System.Drawing.Size(182, 45);
+            this.DetailTrackBar.Size = new System.Drawing.Size(228, 45);
             this.DetailTrackBar.TabIndex = 34;
             this.DetailTrackBar.Value = 5;
             this.DetailTrackBar.Scroll += new System.EventHandler(this.DetailTrackBar_Scroll);
@@ -824,7 +826,7 @@ namespace CodeWalker
             this.YmapsTextBox.Multiline = true;
             this.YmapsTextBox.Name = "YmapsTextBox";
             this.YmapsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.YmapsTextBox.Size = new System.Drawing.Size(194, 418);
+            this.YmapsTextBox.Size = new System.Drawing.Size(240, 418);
             this.YmapsTextBox.TabIndex = 36;
             this.YmapsTextBox.Text = resources.GetString("YmapsTextBox.Text");
             this.YmapsTextBox.TextChanged += new System.EventHandler(this.YmapsTextBox_TextChanged);
@@ -835,7 +837,7 @@ namespace CodeWalker
             this.ViewModelTabPage.Controls.Add(this.ModelComboBox);
             this.ViewModelTabPage.Location = new System.Drawing.Point(4, 22);
             this.ViewModelTabPage.Name = "ViewModelTabPage";
-            this.ViewModelTabPage.Size = new System.Drawing.Size(194, 522);
+            this.ViewModelTabPage.Size = new System.Drawing.Size(240, 522);
             this.ViewModelTabPage.TabIndex = 2;
             this.ViewModelTabPage.Text = "Model";
             this.ViewModelTabPage.UseVisualStyleBackColor = true;
@@ -905,7 +907,7 @@ namespace CodeWalker
             this.MarkersTabPage.Location = new System.Drawing.Point(4, 22);
             this.MarkersTabPage.Name = "MarkersTabPage";
             this.MarkersTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MarkersTabPage.Size = new System.Drawing.Size(205, 606);
+            this.MarkersTabPage.Size = new System.Drawing.Size(251, 606);
             this.MarkersTabPage.TabIndex = 1;
             this.MarkersTabPage.Text = "Markers";
             this.MarkersTabPage.UseVisualStyleBackColor = true;
@@ -1058,7 +1060,7 @@ namespace CodeWalker
             this.SelectionTabPage.Controls.Add(this.MouseSelectCheckBox);
             this.SelectionTabPage.Location = new System.Drawing.Point(4, 22);
             this.SelectionTabPage.Name = "SelectionTabPage";
-            this.SelectionTabPage.Size = new System.Drawing.Size(205, 606);
+            this.SelectionTabPage.Size = new System.Drawing.Size(251, 606);
             this.SelectionTabPage.TabIndex = 2;
             this.SelectionTabPage.Text = "Selection";
             this.SelectionTabPage.UseVisualStyleBackColor = true;
@@ -1325,7 +1327,7 @@ namespace CodeWalker
             this.OptionsTabPage.Controls.Add(this.ErrorConsoleCheckBox);
             this.OptionsTabPage.Location = new System.Drawing.Point(4, 22);
             this.OptionsTabPage.Name = "OptionsTabPage";
-            this.OptionsTabPage.Size = new System.Drawing.Size(205, 606);
+            this.OptionsTabPage.Size = new System.Drawing.Size(251, 709);
             this.OptionsTabPage.TabIndex = 3;
             this.OptionsTabPage.Text = "Options";
             this.OptionsTabPage.UseVisualStyleBackColor = true;
@@ -1341,7 +1343,7 @@ namespace CodeWalker
             this.OptionsTabControl.Location = new System.Drawing.Point(0, 3);
             this.OptionsTabControl.Name = "OptionsTabControl";
             this.OptionsTabControl.SelectedIndex = 0;
-            this.OptionsTabControl.Size = new System.Drawing.Size(208, 508);
+            this.OptionsTabControl.Size = new System.Drawing.Size(208, 560);
             this.OptionsTabControl.TabIndex = 50;
             // 
             // OptionsGeneralTabPage
@@ -1372,10 +1374,12 @@ namespace CodeWalker
             this.OptionsGeneralTabPage.Controls.Add(this.FullScreenCheckBox);
             this.OptionsGeneralTabPage.Controls.Add(this.TimedEntitiesCheckBox);
             this.OptionsGeneralTabPage.Controls.Add(this.FieldOfViewTrackBar);
+            this.OptionsGeneralTabPage.Controls.Add(this.DisableZoomFadeEffectCheckBox);
+            this.OptionsGeneralTabPage.Controls.Add(this.AdjustZoomCheckBox);
             this.OptionsGeneralTabPage.Location = new System.Drawing.Point(4, 22);
             this.OptionsGeneralTabPage.Name = "OptionsGeneralTabPage";
             this.OptionsGeneralTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.OptionsGeneralTabPage.Size = new System.Drawing.Size(200, 482);
+            this.OptionsGeneralTabPage.Size = new System.Drawing.Size(200, 534);
             this.OptionsGeneralTabPage.TabIndex = 0;
             this.OptionsGeneralTabPage.Text = "General";
             this.OptionsGeneralTabPage.UseVisualStyleBackColor = true;
@@ -1406,7 +1410,7 @@ namespace CodeWalker
             // 
             // AdvancedSettingsButton
             // 
-            this.AdvancedSettingsButton.Location = new System.Drawing.Point(101, 456);
+            this.AdvancedSettingsButton.Location = new System.Drawing.Point(101, 502);
             this.AdvancedSettingsButton.Name = "AdvancedSettingsButton";
             this.AdvancedSettingsButton.Size = new System.Drawing.Size(93, 23);
             this.AdvancedSettingsButton.TabIndex = 46;
@@ -1416,7 +1420,7 @@ namespace CodeWalker
             // 
             // ControlSettingsButton
             // 
-            this.ControlSettingsButton.Location = new System.Drawing.Point(2, 456);
+            this.ControlSettingsButton.Location = new System.Drawing.Point(6, 502);
             this.ControlSettingsButton.Name = "ControlSettingsButton";
             this.ControlSettingsButton.Size = new System.Drawing.Size(93, 23);
             this.ControlSettingsButton.TabIndex = 45;
@@ -1686,6 +1690,26 @@ namespace CodeWalker
             this.FieldOfViewTrackBar.TickFrequency = 10;
             this.FieldOfViewTrackBar.Value = 100;
             this.FieldOfViewTrackBar.Scroll += new System.EventHandler(this.FieldOfViewTrackBar_Scroll);
+            // 
+            // DisableZoomFadeEffectCheckBox
+            // 
+            this.DisableZoomFadeEffectCheckBox.AutoSize = true;
+            this.DisableZoomFadeEffectCheckBox.Location = new System.Drawing.Point(10, 479);
+            this.DisableZoomFadeEffectCheckBox.Name = "DisableZoomFadeEffectCheckBox";
+            this.DisableZoomFadeEffectCheckBox.Size = new System.Drawing.Size(136, 17);
+            this.DisableZoomFadeEffectCheckBox.TabIndex = 68;
+            this.DisableZoomFadeEffectCheckBox.Text = "Disable fading on zoom";
+            this.DisableZoomFadeEffectCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // AdjustZoomCheckBox
+            // 
+            this.AdjustZoomCheckBox.AutoSize = true;
+            this.AdjustZoomCheckBox.Location = new System.Drawing.Point(10, 455);
+            this.AdjustZoomCheckBox.Name = "AdjustZoomCheckBox";
+            this.AdjustZoomCheckBox.Size = new System.Drawing.Size(127, 17);
+            this.AdjustZoomCheckBox.TabIndex = 67;
+            this.AdjustZoomCheckBox.Text = "Adjust zoom on focus";
+            this.AdjustZoomCheckBox.UseVisualStyleBackColor = true;
             // 
             // OptionsRenderTabPage
             // 
@@ -2597,7 +2621,7 @@ namespace CodeWalker
             this.StatusBarCheckBox.AutoSize = true;
             this.StatusBarCheckBox.Checked = true;
             this.StatusBarCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.StatusBarCheckBox.Location = new System.Drawing.Point(119, 517);
+            this.StatusBarCheckBox.Location = new System.Drawing.Point(119, 571);
             this.StatusBarCheckBox.Name = "StatusBarCheckBox";
             this.StatusBarCheckBox.Size = new System.Drawing.Size(74, 17);
             this.StatusBarCheckBox.TabIndex = 145;
@@ -2607,7 +2631,7 @@ namespace CodeWalker
             // 
             // QuitButton
             // 
-            this.QuitButton.Location = new System.Drawing.Point(105, 569);
+            this.QuitButton.Location = new System.Drawing.Point(105, 623);
             this.QuitButton.Name = "QuitButton";
             this.QuitButton.Size = new System.Drawing.Size(93, 23);
             this.QuitButton.TabIndex = 149;
@@ -2618,7 +2642,7 @@ namespace CodeWalker
             // ReloadSettingsButton
             // 
             this.ReloadSettingsButton.Enabled = false;
-            this.ReloadSettingsButton.Location = new System.Drawing.Point(6, 540);
+            this.ReloadSettingsButton.Location = new System.Drawing.Point(11, 594);
             this.ReloadSettingsButton.Name = "ReloadSettingsButton";
             this.ReloadSettingsButton.Size = new System.Drawing.Size(93, 23);
             this.ReloadSettingsButton.TabIndex = 146;
@@ -2629,7 +2653,7 @@ namespace CodeWalker
             // 
             // SaveSettingsButton
             // 
-            this.SaveSettingsButton.Location = new System.Drawing.Point(105, 540);
+            this.SaveSettingsButton.Location = new System.Drawing.Point(105, 594);
             this.SaveSettingsButton.Name = "SaveSettingsButton";
             this.SaveSettingsButton.Size = new System.Drawing.Size(93, 23);
             this.SaveSettingsButton.TabIndex = 147;
@@ -2639,7 +2663,7 @@ namespace CodeWalker
             // 
             // ReloadShadersButton
             // 
-            this.ReloadShadersButton.Location = new System.Drawing.Point(6, 569);
+            this.ReloadShadersButton.Location = new System.Drawing.Point(11, 623);
             this.ReloadShadersButton.Name = "ReloadShadersButton";
             this.ReloadShadersButton.Size = new System.Drawing.Size(93, 23);
             this.ReloadShadersButton.TabIndex = 148;
@@ -2650,7 +2674,7 @@ namespace CodeWalker
             // ErrorConsoleCheckBox
             // 
             this.ErrorConsoleCheckBox.AutoSize = true;
-            this.ErrorConsoleCheckBox.Location = new System.Drawing.Point(14, 517);
+            this.ErrorConsoleCheckBox.Location = new System.Drawing.Point(14, 571);
             this.ErrorConsoleCheckBox.Name = "ErrorConsoleCheckBox";
             this.ErrorConsoleCheckBox.Size = new System.Drawing.Size(88, 17);
             this.ErrorConsoleCheckBox.TabIndex = 144;
@@ -2686,7 +2710,7 @@ namespace CodeWalker
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ConsolePanel.BackColor = System.Drawing.SystemColors.Control;
             this.ConsolePanel.Controls.Add(this.ConsoleTextBox);
-            this.ConsolePanel.Location = new System.Drawing.Point(12, 576);
+            this.ConsolePanel.Location = new System.Drawing.Point(12, 679);
             this.ConsolePanel.Name = "ConsolePanel";
             this.ConsolePanel.Size = new System.Drawing.Size(690, 101);
             this.ConsolePanel.TabIndex = 3;
@@ -3587,7 +3611,7 @@ namespace CodeWalker
             this.SubtitleLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.SubtitleLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SubtitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SubtitleLabel.Location = new System.Drawing.Point(455, 555);
+            this.SubtitleLabel.Location = new System.Drawing.Point(455, 658);
             this.SubtitleLabel.Name = "SubtitleLabel";
             this.SubtitleLabel.Size = new System.Drawing.Size(84, 18);
             this.SubtitleLabel.TabIndex = 8;
@@ -3605,7 +3629,7 @@ namespace CodeWalker
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MidnightBlue;
-            this.ClientSize = new System.Drawing.Size(984, 711);
+            this.ClientSize = new System.Drawing.Size(984, 814);
             this.Controls.Add(this.ToolbarPanel);
             this.Controls.Add(this.SelectedMarkerPanel);
             this.Controls.Add(this.ConsolePanel);
@@ -3970,5 +3994,7 @@ namespace CodeWalker
         private System.Windows.Forms.ToolStripMenuItem ToolbarSelectCalmingQuadButton;
         private System.Windows.Forms.ToolStripMenuItem ToolbarSelectWaveQuadButton;
         private System.Windows.Forms.ToolStripMenuItem ToolsMenuAudioExplorer;
+        private System.Windows.Forms.CheckBox DisableZoomFadeEffectCheckBox;
+        private System.Windows.Forms.CheckBox AdjustZoomCheckBox;
     }
 }
