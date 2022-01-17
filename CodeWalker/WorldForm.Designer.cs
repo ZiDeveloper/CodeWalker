@@ -528,7 +528,7 @@ namespace CodeWalker
             this.ViewTabPage.Location = new System.Drawing.Point(4, 22);
             this.ViewTabPage.Name = "ViewTabPage";
             this.ViewTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ViewTabPage.Size = new System.Drawing.Size(251, 606);
+            this.ViewTabPage.Size = new System.Drawing.Size(251, 709);
             this.ViewTabPage.TabIndex = 0;
             this.ViewTabPage.Text = "View";
             this.ViewTabPage.UseVisualStyleBackColor = true;
@@ -907,7 +907,7 @@ namespace CodeWalker
             this.MarkersTabPage.Location = new System.Drawing.Point(4, 22);
             this.MarkersTabPage.Name = "MarkersTabPage";
             this.MarkersTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MarkersTabPage.Size = new System.Drawing.Size(251, 606);
+            this.MarkersTabPage.Size = new System.Drawing.Size(251, 709);
             this.MarkersTabPage.TabIndex = 1;
             this.MarkersTabPage.Text = "Markers";
             this.MarkersTabPage.UseVisualStyleBackColor = true;
@@ -1060,7 +1060,7 @@ namespace CodeWalker
             this.SelectionTabPage.Controls.Add(this.MouseSelectCheckBox);
             this.SelectionTabPage.Location = new System.Drawing.Point(4, 22);
             this.SelectionTabPage.Name = "SelectionTabPage";
-            this.SelectionTabPage.Size = new System.Drawing.Size(251, 606);
+            this.SelectionTabPage.Size = new System.Drawing.Size(251, 709);
             this.SelectionTabPage.TabIndex = 2;
             this.SelectionTabPage.Text = "Selection";
             this.SelectionTabPage.UseVisualStyleBackColor = true;
@@ -1129,7 +1129,7 @@ namespace CodeWalker
             this.SelectionTabControl.Margin = new System.Windows.Forms.Padding(0);
             this.SelectionTabControl.Name = "SelectionTabControl";
             this.SelectionTabControl.SelectedIndex = 0;
-            this.SelectionTabControl.Size = new System.Drawing.Size(205, 511);
+            this.SelectionTabControl.Size = new System.Drawing.Size(251, 511);
             this.SelectionTabControl.TabIndex = 28;
             // 
             // SelectionEntityTabPage
@@ -1138,7 +1138,7 @@ namespace CodeWalker
             this.SelectionEntityTabPage.Location = new System.Drawing.Point(4, 22);
             this.SelectionEntityTabPage.Name = "SelectionEntityTabPage";
             this.SelectionEntityTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SelectionEntityTabPage.Size = new System.Drawing.Size(197, 485);
+            this.SelectionEntityTabPage.Size = new System.Drawing.Size(243, 485);
             this.SelectionEntityTabPage.TabIndex = 0;
             this.SelectionEntityTabPage.Text = "Entity";
             this.SelectionEntityTabPage.UseVisualStyleBackColor = true;
@@ -1153,7 +1153,7 @@ namespace CodeWalker
             this.SelEntityPropertyGrid.Name = "SelEntityPropertyGrid";
             this.SelEntityPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
             this.SelEntityPropertyGrid.ReadOnly = true;
-            this.SelEntityPropertyGrid.Size = new System.Drawing.Size(197, 476);
+            this.SelEntityPropertyGrid.Size = new System.Drawing.Size(243, 476);
             this.SelEntityPropertyGrid.TabIndex = 35;
             this.SelEntityPropertyGrid.ToolbarVisible = false;
             // 
@@ -1343,7 +1343,7 @@ namespace CodeWalker
             this.OptionsTabControl.Location = new System.Drawing.Point(0, 3);
             this.OptionsTabControl.Name = "OptionsTabControl";
             this.OptionsTabControl.SelectedIndex = 0;
-            this.OptionsTabControl.Size = new System.Drawing.Size(208, 560);
+            this.OptionsTabControl.Size = new System.Drawing.Size(248, 560);
             this.OptionsTabControl.TabIndex = 50;
             // 
             // OptionsGeneralTabPage
@@ -1379,7 +1379,7 @@ namespace CodeWalker
             this.OptionsGeneralTabPage.Location = new System.Drawing.Point(4, 22);
             this.OptionsGeneralTabPage.Name = "OptionsGeneralTabPage";
             this.OptionsGeneralTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.OptionsGeneralTabPage.Size = new System.Drawing.Size(200, 534);
+            this.OptionsGeneralTabPage.Size = new System.Drawing.Size(240, 534);
             this.OptionsGeneralTabPage.TabIndex = 0;
             this.OptionsGeneralTabPage.Text = "General";
             this.OptionsGeneralTabPage.UseVisualStyleBackColor = true;
@@ -1457,7 +1457,7 @@ namespace CodeWalker
             this.MapViewDetailTrackBar.Maximum = 30;
             this.MapViewDetailTrackBar.Minimum = 2;
             this.MapViewDetailTrackBar.Name = "MapViewDetailTrackBar";
-            this.MapViewDetailTrackBar.Size = new System.Drawing.Size(188, 45);
+            this.MapViewDetailTrackBar.Size = new System.Drawing.Size(228, 45);
             this.MapViewDetailTrackBar.TabIndex = 44;
             this.MapViewDetailTrackBar.TickFrequency = 2;
             this.MapViewDetailTrackBar.Value = 10;
@@ -1635,7 +1635,7 @@ namespace CodeWalker
             this.CollisionMeshRangeTrackBar.Maximum = 15;
             this.CollisionMeshRangeTrackBar.Minimum = 1;
             this.CollisionMeshRangeTrackBar.Name = "CollisionMeshRangeTrackBar";
-            this.CollisionMeshRangeTrackBar.Size = new System.Drawing.Size(188, 45);
+            this.CollisionMeshRangeTrackBar.Size = new System.Drawing.Size(228, 45);
             this.CollisionMeshRangeTrackBar.TabIndex = 37;
             this.CollisionMeshRangeTrackBar.Value = 6;
             this.CollisionMeshRangeTrackBar.Scroll += new System.EventHandler(this.CollisionMeshRangeTrackBar_Scroll);
@@ -1685,7 +1685,7 @@ namespace CodeWalker
             this.FieldOfViewTrackBar.Maximum = 200;
             this.FieldOfViewTrackBar.Minimum = 10;
             this.FieldOfViewTrackBar.Name = "FieldOfViewTrackBar";
-            this.FieldOfViewTrackBar.Size = new System.Drawing.Size(188, 45);
+            this.FieldOfViewTrackBar.Size = new System.Drawing.Size(228, 45);
             this.FieldOfViewTrackBar.TabIndex = 43;
             this.FieldOfViewTrackBar.TickFrequency = 10;
             this.FieldOfViewTrackBar.Value = 100;
@@ -1730,7 +1730,7 @@ namespace CodeWalker
             this.OptionsRenderTabPage.Controls.Add(this.label14);
             this.OptionsRenderTabPage.Location = new System.Drawing.Point(4, 22);
             this.OptionsRenderTabPage.Name = "OptionsRenderTabPage";
-            this.OptionsRenderTabPage.Size = new System.Drawing.Size(200, 482);
+            this.OptionsRenderTabPage.Size = new System.Drawing.Size(240, 534);
             this.OptionsRenderTabPage.TabIndex = 3;
             this.OptionsRenderTabPage.Text = "Render";
             this.OptionsRenderTabPage.UseVisualStyleBackColor = true;
@@ -1976,7 +1976,7 @@ namespace CodeWalker
             this.OptionsHelpersTabPage.Location = new System.Drawing.Point(4, 22);
             this.OptionsHelpersTabPage.Name = "OptionsHelpersTabPage";
             this.OptionsHelpersTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.OptionsHelpersTabPage.Size = new System.Drawing.Size(200, 482);
+            this.OptionsHelpersTabPage.Size = new System.Drawing.Size(240, 534);
             this.OptionsHelpersTabPage.TabIndex = 1;
             this.OptionsHelpersTabPage.Text = "Helpers";
             this.OptionsHelpersTabPage.UseVisualStyleBackColor = true;
@@ -2305,7 +2305,7 @@ namespace CodeWalker
             this.OptionsLightingTabPage.Controls.Add(this.ShadowsCheckBox);
             this.OptionsLightingTabPage.Location = new System.Drawing.Point(4, 22);
             this.OptionsLightingTabPage.Name = "OptionsLightingTabPage";
-            this.OptionsLightingTabPage.Size = new System.Drawing.Size(200, 482);
+            this.OptionsLightingTabPage.Size = new System.Drawing.Size(240, 534);
             this.OptionsLightingTabPage.TabIndex = 2;
             this.OptionsLightingTabPage.Text = "Lighting";
             this.OptionsLightingTabPage.UseVisualStyleBackColor = true;
@@ -2368,7 +2368,7 @@ namespace CodeWalker
             this.CloudParamTrackBar.Location = new System.Drawing.Point(6, 436);
             this.CloudParamTrackBar.Maximum = 200;
             this.CloudParamTrackBar.Name = "CloudParamTrackBar";
-            this.CloudParamTrackBar.Size = new System.Drawing.Size(188, 45);
+            this.CloudParamTrackBar.Size = new System.Drawing.Size(228, 45);
             this.CloudParamTrackBar.TabIndex = 55;
             this.CloudParamTrackBar.TickFrequency = 10;
             this.CloudParamTrackBar.Value = 100;
@@ -2445,7 +2445,7 @@ namespace CodeWalker
             this.TimeSpeedTrackBar.Maximum = 100;
             this.TimeSpeedTrackBar.Minimum = 40;
             this.TimeSpeedTrackBar.Name = "TimeSpeedTrackBar";
-            this.TimeSpeedTrackBar.Size = new System.Drawing.Size(133, 45);
+            this.TimeSpeedTrackBar.Size = new System.Drawing.Size(173, 45);
             this.TimeSpeedTrackBar.TabIndex = 46;
             this.TimeSpeedTrackBar.TickFrequency = 5;
             this.TimeSpeedTrackBar.Value = 50;
@@ -2553,7 +2553,7 @@ namespace CodeWalker
             this.TimeOfDayTrackBar.Location = new System.Drawing.Point(6, 224);
             this.TimeOfDayTrackBar.Maximum = 1440;
             this.TimeOfDayTrackBar.Name = "TimeOfDayTrackBar";
-            this.TimeOfDayTrackBar.Size = new System.Drawing.Size(188, 45);
+            this.TimeOfDayTrackBar.Size = new System.Drawing.Size(228, 45);
             this.TimeOfDayTrackBar.TabIndex = 42;
             this.TimeOfDayTrackBar.TickFrequency = 60;
             this.TimeOfDayTrackBar.Value = 720;
