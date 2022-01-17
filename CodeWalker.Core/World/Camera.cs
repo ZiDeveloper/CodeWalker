@@ -13,8 +13,9 @@ namespace CodeWalker.World
         public Vector3 CurrentRotation = Vector3.Zero;
         public float Smoothness;// 10.0f;//0.15f;
         public float Sensitivity;// 0.005f;
-        public float TargetDistance = 1.0f;
-        public float CurrentDistance = 1.0f;
+        public float MovementSpeed = 1.0f;
+        public float TargetDistance = 0.0f;
+        public float CurrentDistance = 0.0f;
         public float ZoomCurrentTime = 0.0f;
         public float ZoomTargetTime = 2.0f;
         public float ZoomVelocity = 0.0f;
@@ -32,6 +33,7 @@ namespace CodeWalker.World
         public bool UpdateProj = true;
         public bool IsMapView = false;
         public bool IsOrthographic = false;
+        public bool IsOrbit = false;
         public float OrthographicSize = 20.0f;
         public float OrthographicTargetSize = 20.0f;
         public Matrix ProjMatrix = Matrix.Identity;
@@ -263,8 +265,16 @@ namespace CodeWalker.World
             lock (syncRoot)
             {
                 float v = (z < 0) ? (1.0f - z) : (z > 0) ? (1.0f / (1.0f + z)) : 1.0f;
-                TargetDistance *= v;
                 OrthographicTargetSize *= v;
+                if (IsOrbit)
+                {
+                    TargetDistance *= v;
+                }
+                else 
+                {
+                    float v_inverted = (z > 0) ? 1.1f : (z < 0) ? 1.0f / 1.1f : 1.0f;
+                    MovementSpeed *= v_inverted;
+                }
             }
         }
 
@@ -282,8 +292,17 @@ namespace CodeWalker.World
             lock (syncRoot)
             {
                 float v = (z < 0) ? 1.1f : (z > 0) ? 1.0f / 1.1f : 1.0f;
-                TargetDistance *= v;
+
                 OrthographicTargetSize *= v;
+                if (IsOrbit)
+                {
+                    TargetDistance *= v;
+                }
+                else
+                {
+                    float v_inverted = (z > 0) ? 1.1f : (z < 0) ? 1.0f / 1.1f : 1.0f;
+                    MovementSpeed *= v_inverted;
+                }
             }
         }
 
