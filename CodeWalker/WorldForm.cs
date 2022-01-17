@@ -4140,6 +4140,182 @@ namespace CodeWalker
             SelectObject(entity);
         }
 
+        // Get the offset position of archtype extension
+        private Vector3 GetExtentionOffsetVector(object selectedExtentionGridObject)
+        {
+            Type t = selectedExtentionGridObject.GetType();
+            System.Reflection.PropertyInfo tProp = (t.GetProperty("Data"));
+
+            object tPropValue = tProp.GetValue(selectedExtentionGridObject, null);
+
+            Type t2 = tPropValue.GetType();
+            System.Reflection.PropertyInfo t2Prop = (t2.GetProperty("offsetPosition"));
+
+            return (Vector3)t2Prop.GetValue(tPropValue, null);
+        }
+
+        // Calculate diagonal lenght of bounding box (used as zoom factor)
+        public float BLenght(MapSelection pSel)
+        {
+            if (pSel.CollisionPoly != null)
+            {
+                return (pSel.CollisionPoly.BoxMax - pSel.CollisionPoly.BoxMin).Length();
+            }
+            else if (pSel.CollisionBounds != null)
+            {
+                return (pSel.CollisionBounds.BoxMax - pSel.CollisionBounds.BoxMin).Length();
+            }
+            else if (pSel.BoxOccluder != null)
+            {
+                return (pSel.BoxOccluder.BBMax - pSel.BoxOccluder.BBMin).Length();
+            }
+            else if (pSel.OccludeModelTri != null)
+            {
+                return (pSel.OccludeModelTri.Box.Maximum - pSel.OccludeModelTri.Box.Minimum).Length();
+            }
+            else if (pSel.TimeCycleModifier != null)
+            {
+                return (pSel.TimeCycleModifier.BBMax - pSel.TimeCycleModifier.BBMin).Length();
+            }
+            else if (pSel.CarGenerator != null)
+            {
+                return (pSel.CarGenerator.BBMax - pSel.CarGenerator.BBMin).Length();
+            }
+            else if (pSel.Archetype != null)
+            {
+                return (pSel.Archetype.BBMax - pSel.Archetype.BBMin).Length();
+            }
+            return 5.0f;
+        }
+
+        // Center view to selected object relative to its type
+        public void ViewFocusSelection()
+        {
+            Vector3 selPos = Vector3.Zero;
+            float selZoom = 5.0f;
+
+            // MultipleSelectionItems
+            if (SelectedItem.MultipleSelectionItems != null)
+            { selPos = SelectedItem.MultipleSelectionCenter; }
+            // CollisionVertex
+            else if (SelectedItem.CollisionVertex != null)
+            {
+                // World Collision
+                if (SelectedItem.EntityDef == null) { selPos = SelectedItem.CollisionVertex.Position; }
+                // Embedded Collision
+                else { selPos = SelectedItem.EntityDef.Position + Vector3.Transform(SelectedItem.CollisionVertex.Position, SelectedItem.EntityDef.Orientation); }
+            }
+            // CollisionPoly
+            else if (SelectedItem.CollisionPoly != null)
+            {
+                // World Collision
+                if (SelectedItem.EntityDef == null) { selPos = SelectedItem.CollisionPoly.Position; }
+                // Embedded Collision
+                else { selPos = SelectedItem.EntityDef.Position + Vector3.Transform(SelectedItem.CollisionPoly.Position, SelectedItem.EntityDef.Orientation); }
+                selZoom = BLenght(SelectedItem);
+            }
+            // CollisionBounds
+            else if (SelectedItem.CollisionBounds != null)
+            {
+                // World Collision
+                if (SelectedItem.EntityDef == null) { selPos = SelectedItem.CollisionBounds.Position; }
+                // Embedded Collision
+                else { selPos = SelectedItem.EntityDef.Position + Vector3.Transform(SelectedItem.CollisionBounds.Position, SelectedItem.EntityDef.Orientation); }
+                selZoom = BLenght(SelectedItem);
+            }
+            // EntityDef
+            else if (SelectedItem.EntityDef != null)
+            {
+                selPos = SelectedItem.EntityDef.BBCenter;
+                if (SelectedItem.EntityDef.IsMlo) { selZoom = BLenght(SelectedItem); }
+                else { selZoom = SelectedItem.EntityDef.Archetype.BSRadius * 3.0f; }
+            }
+            // Archetype
+            else if (SelectedItem.Archetype != null)
+            { selPos = SelectedItem.Archetype.BSCenter; selZoom = SelectedItem.Archetype.BSRadius; }
+            // TimeCycleModifier
+            else if (SelectedItem.TimeCycleModifier != null)
+            { selPos = SelectedItem.TimeCycleModifier.BBMin; selZoom = BLenght(SelectedItem); }
+            // CarGenerator
+            else if (SelectedItem.CarGenerator != null)
+            { selPos = SelectedItem.CarGenerator.Position; selZoom = BLenght(SelectedItem) * 1.5f; }
+            // GrassBatch
+            else if (SelectedItem.GrassBatch != null)
+            { LogError("ViewFocusSelection is not implemented for Grass objects yet (sorry (╥ᆺ╥))"); }
+            // LodLight
+            else if (SelectedItem.LodLight != null)
+            { LogError("ViewFocusSelection is not implemented for LodLight objects yet (sorry (╥ᆺ╥))"); }
+            // BoxOccluder
+            else if (SelectedItem.BoxOccluder != null)
+            { selPos = SelectedItem.BoxOccluder.Position; selZoom = BLenght(SelectedItem); }
+            // OccludeModelTri
+            else if (SelectedItem.OccludeModelTri != null)
+            { selPos = SelectedItem.OccludeModelTri.Center; selZoom = BLenght(SelectedItem); }
+            // WaterQuad
+            else if (SelectedItem.WaterQuad != null)
+            { selPos = SelectedItem.WaterQuad.BSCenter; selZoom = SelectedItem.WaterQuad.BSRadius * 3.0f; }
+            // CalmingQuad
+            else if (SelectedItem.CalmingQuad != null)
+            { selPos = SelectedItem.CalmingQuad.BSCenter; selZoom = SelectedItem.CalmingQuad.BSRadius * 3.0f; }
+            // WaveQuad
+            else if (SelectedItem.WaveQuad != null)
+            { selPos = SelectedItem.WaveQuad.BSCenter; selZoom = SelectedItem.WaveQuad.BSRadius * 3.0f; }
+            // NavPoly
+            else if (SelectedItem.NavPoly != null)
+            { selPos = SelectedItem.NavPoly.Position; }
+            // NavPoint
+            else if (SelectedItem.NavPoint != null)
+            { selPos = SelectedItem.NavPoint.Position; }
+            // NavPortal
+            else if (SelectedItem.NavPortal != null)
+            { selPos = SelectedItem.NavPortal.Position; }
+            // PathNode
+            else if (SelectedItem.PathNode != null)
+            { selPos = SelectedItem.PathNode.Position; }
+            // TrainTrackNode
+            else if (SelectedItem.TrainTrackNode != null)
+            { selPos = SelectedItem.TrainTrackNode.Position; }
+            // ScenarioNode
+            else if (SelectedItem.ScenarioNode != null)
+            { selPos = SelectedItem.ScenarioNode.Position; }
+            // Audio (Zone & Emitter)
+            else if (SelectedItem.Audio != null)
+            {
+                if (SelectedItem.Audio.AudioZone != null)
+                { selPos = SelectedItem.Audio.Position; }
+                else if (SelectedItem.Audio.AudioEmitter != null)
+                { selPos = SelectedItem.Audio.Position; }
+            }
+
+            if (SelectedItem.MloRoomDef != null)
+            { LogError("ViewFocusSelection is not implemented for MloRoomDef objects yet (sorry (╥ᆺ╥))"); }
+            if (SelectedItem.EntityExtension != null)
+            { LogError("ViewFocusSelection is not implemented for EntityExtension objects yet (sorry (╥ᆺ╥))"); }
+            // ArchetypeExtension
+            if (SelectedItem.ArchetypeExtension != null)
+            {
+                if (SelExtensionPropertyGrid.SelectedObject != null)
+                {
+                    Vector3 extensionEntityPosition = SelectedItem.EntityDef.Position;
+                    Vector3 extensionOffsetPosition = GetExtentionOffsetVector(SelExtensionPropertyGrid.SelectedObject);
+                    Quaternion extentionsEntityOrientation = SelectedItem.EntityDef.Orientation;
+
+                    selPos = extensionEntityPosition + Vector3.Transform(extensionOffsetPosition, extentionsEntityOrientation);
+                    selZoom = 5.0f;
+                }
+            }
+
+            // Go to Object
+            if (!selPos.IsZero) { GoToPosition(selPos); }
+
+            // Enter Orbit
+            if (!camera.IsOrbit) { camera.IsOrbit = true; }
+
+            // Adjust Zoom
+            camera.TargetDistance = selZoom;
+            camera.CurrentDistance = selZoom;
+        }
+
 
         private void LoadWorld()
         {
@@ -5997,7 +6173,10 @@ namespace CodeWalker
 
         private void WorldForm_MouseMiddleUp(object sender, MouseEventArgs e)
         {
-            // add code here
+            if (SelectionNameTextBox.Text != "" && SelectionNameTextBox.Text != "Nothing selected")
+            {
+                ViewFocusSelection();
+            }
         }
 
         private void WorldForm_MouseMove(object sender, MouseEventArgs e)
