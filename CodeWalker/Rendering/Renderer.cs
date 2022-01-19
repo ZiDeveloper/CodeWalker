@@ -670,6 +670,15 @@ namespace CodeWalker.Rendering
 
         }
 
+        public void RenderDirect2DTest()
+        {
+            dxman.d2dContext.BeginDraw();
+
+            dxman.d2dContext.Clear(new SharpDX.Mathematics.Interop.RawColor4(1f, 1f, 1f, 1f));
+
+            dxman.d2dContext.EndDraw();
+        }
+
 
 
         public void RenderTransformWidget(TransformWidget widget)

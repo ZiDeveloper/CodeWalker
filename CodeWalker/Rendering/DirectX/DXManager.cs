@@ -28,6 +28,14 @@ namespace CodeWalker.Rendering
         public RenderTargetView targetview { get; private set; }
         public DepthStencilView depthview { get; private set; }
 
+        public SharpDX.DXGI.Device dxgiDevice { get; private set; }
+        public SharpDX.Direct2D1.Device d2dDevice { get; private set; }
+        public SharpDX.Direct2D1.DeviceContext d2dContext { get; private set; }
+        public SharpDX.Direct2D1.BitmapProperties1 d2dTargetProperties { get; private set; }
+        public SharpDX.Direct2D1.Bitmap1 d2dRenderTargetBitmap { get; private set; }
+        public SharpDX.DXGI.Surface dxgiSurface { get; private set; }
+
+
         private volatile bool Running = false;
         private volatile bool Rendering = false;
         private volatile bool Resizing = false;
@@ -65,7 +73,7 @@ namespace CodeWalker.Rendering
 
                 FeatureLevel[] levels = new FeatureLevel[] { FeatureLevel.Level_11_0, FeatureLevel.Level_10_1, FeatureLevel.Level_10_0 };
 
-                DeviceCreationFlags flags = DeviceCreationFlags.None;
+                DeviceCreationFlags flags = DeviceCreationFlags.BgraSupport;
                 //#if DEBUG
                 //    flags = DeviceCreationFlags.Debug;
                 //#endif
@@ -115,7 +123,7 @@ namespace CodeWalker.Rendering
 
                 context = device.ImmediateContext;
 
-
+                Init2D();
 
                 CreateRenderBuffers();
 
@@ -153,6 +161,8 @@ namespace CodeWalker.Rendering
             }
 
             dxform.CleanupScene();
+
+            Dispose2D();
 
             //dipose of all objects
             if (depthview != null) depthview.Dispose();
@@ -209,7 +219,11 @@ namespace CodeWalker.Rendering
             if (targetview != null) targetview.Dispose();
             if (backbuffer != null) backbuffer.Dispose();
 
+            Resize2DCleanup();
+
             swapchain.ResizeBuffers(1, width, height, Format.Unknown, SwapChainFlags.AllowModeSwitch);
+
+            Resize2DInit();
 
             CreateRenderBuffers();
 
@@ -351,6 +365,66 @@ namespace CodeWalker.Rendering
         }
 
 
+        private void Init2D()
+        {
+            // Create DXGI Device
+            dxgiDevice = device.QueryInterface<SharpDX.DXGI.Device>();
+
+            // Create Direct 2D Device & Context
+            d2dDevice = new SharpDX.Direct2D1.Device(dxgiDevice);
+            d2dContext = new SharpDX.Direct2D1.DeviceContext(d2dDevice, SharpDX.Direct2D1.DeviceContextOptions.None);
+            d2dContext.PrimitiveBlend = SharpDX.Direct2D1.PrimitiveBlend.SourceOver;
+
+            // Set Target Properties
+            d2dTargetProperties = new SharpDX.Direct2D1.BitmapProperties1(
+                new SharpDX.Direct2D1.PixelFormat(
+                    SharpDX.DXGI.Format.R8G8B8A8_UNorm,
+                    SharpDX.Direct2D1.AlphaMode.Premultiplied),
+                96,
+                96,
+                SharpDX.Direct2D1.BitmapOptions.Target | SharpDX.Direct2D1.BitmapOptions.CannotDraw);
+
+            // Get Surface
+            dxgiSurface = swapchain.GetBackBuffer<Surface>(0);
+
+            // Create Target
+            d2dRenderTargetBitmap = new SharpDX.Direct2D1.Bitmap1(d2dContext, dxgiSurface, d2dTargetProperties);
+
+            // Bind Target
+            d2dContext.Target = d2dRenderTargetBitmap;
+        }
+
+        private void Dispose2D()
+        {
+            // Dispose of all 2D objects
+            if (d2dRenderTargetBitmap != null) d2dRenderTargetBitmap.Dispose();
+            if (dxgiSurface != null) dxgiSurface.Dispose();
+            if (d2dContext != null) d2dContext.Dispose();
+            if (d2dDevice != null) d2dDevice.Dispose();
+            if (dxgiDevice != null) dxgiDevice.Dispose();
+        }
+
+        private void Resize2DInit()
+        {
+            // Create new context
+            d2dContext = new SharpDX.Direct2D1.DeviceContext(d2dDevice, SharpDX.Direct2D1.DeviceContextOptions.None);
+            d2dContext.PrimitiveBlend = SharpDX.Direct2D1.PrimitiveBlend.SourceOver;
+
+            // Get Surface
+            dxgiSurface = swapchain.GetBackBuffer<Surface>(0);
+
+            // Get Target
+            d2dRenderTargetBitmap = new SharpDX.Direct2D1.Bitmap1(d2dContext, dxgiSurface, d2dTargetProperties);
+
+            // Bind Target
+            d2dContext.Target = d2dRenderTargetBitmap;
+        }
+        private void Resize2DCleanup()
+        {
+            if (d2dRenderTargetBitmap != null) d2dRenderTargetBitmap.Dispose();
+            if (dxgiSurface != null) dxgiSurface.Dispose();
+            if (d2dContext != null) d2dContext.Dispose();
+        }
 
 
 
