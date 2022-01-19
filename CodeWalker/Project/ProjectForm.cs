@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Xml;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -9640,6 +9641,319 @@ namespace CodeWalker.Project
         private void ToolbarSaveAllButton_Click(object sender, EventArgs e)
         {
             SaveAll();
+        }
+
+        private void ToolsConvertCodeWalkerXMLMenu_Click(object sender, EventArgs e)
+        {
+            ConvertXmlAndSave(ShowOpenDialogMulti("XML Files|*.xml", ""));
+        }
+        private void ConvertXmlAndSave(string[] fpaths)
+        {
+            if (fpaths == null) return;
+            foreach (var fpath in fpaths)
+            {
+#if !DEBUG
+                try
+#endif
+                {
+                    if (!File.Exists(fpath))
+                    {
+                        continue;//this shouldn't happen...
+                    }
+
+                    var fi = new FileInfo(fpath);
+                    var fname = fi.Name;
+                    var fnamel = fname.ToLowerInvariant();
+                    var fpathin = fpath;
+                    var mformat = MetaFormat.RSC;
+                    var trimlength = 4;
+
+                    if (!fnamel.EndsWith(".xml"))
+                    {
+                        MessageBox.Show(fname + ": Not an XML file!", "Cannot import/convert XML");
+                        continue;
+                    }
+                    if (fnamel.EndsWith(".pso.xml"))
+                    {
+                        mformat = MetaFormat.PSO;
+                        trimlength = 8;
+                    }
+                    if (fnamel.EndsWith(".rbf.xml"))
+                    {
+                        mformat = MetaFormat.RBF;
+                        trimlength = 8;
+                    }
+                    if (fnamel.EndsWith(".rel.xml"))
+                    {
+                        mformat = MetaFormat.AudioRel;
+                    }
+                    if (fnamel.EndsWith(".ynd.xml"))
+                    {
+                        mformat = MetaFormat.Ynd;
+                    }
+                    if (fnamel.EndsWith(".ynv.xml"))
+                    {
+                        mformat = MetaFormat.Ynv;
+                    }
+                    if (fnamel.EndsWith(".ycd.xml"))
+                    {
+                        mformat = MetaFormat.Ycd;
+                    }
+                    if (fnamel.EndsWith(".ybn.xml"))
+                    {
+                        mformat = MetaFormat.Ybn;
+                    }
+                    if (fnamel.EndsWith(".ytd.xml"))
+                    {
+                        mformat = MetaFormat.Ytd;
+                    }
+                    if (fnamel.EndsWith(".ydr.xml"))
+                    {
+                        mformat = MetaFormat.Ydr;
+                    }
+                    if (fnamel.EndsWith(".ydd.xml"))
+                    {
+                        mformat = MetaFormat.Ydd;
+                    }
+                    if (fnamel.EndsWith(".yft.xml"))
+                    {
+                        mformat = MetaFormat.Yft;
+                    }
+                    if (fnamel.EndsWith(".ypt.xml"))
+                    {
+                        mformat = MetaFormat.Ypt;
+                    }
+                    if (fnamel.EndsWith(".yld.xml"))
+                    {
+                        mformat = MetaFormat.Yld;
+                    }
+                    if (fnamel.EndsWith(".awc.xml"))
+                    {
+                        mformat = MetaFormat.Awc;
+                    }
+                    if (fnamel.EndsWith("cache_y.dat.xml"))
+                    {
+                        mformat = MetaFormat.CacheFile;
+                    }
+                    if (fnamel.EndsWith(".dat.xml") && fnamel.StartsWith("heightmap"))
+                    {
+                        mformat = MetaFormat.Heightmap;
+                    }
+
+                    fname = fname.Substring(0, fname.Length - trimlength);
+                    fnamel = fnamel.Substring(0, fnamel.Length - trimlength);
+                    fpathin = fpathin.Substring(0, fpathin.Length - trimlength);
+                    fpathin = Path.Combine(Path.GetDirectoryName(fpathin), Path.GetFileNameWithoutExtension(fpathin));
+
+                    var doc = new XmlDocument();
+                    string text = File.ReadAllText(fpath);
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        doc.LoadXml(text);
+                    }
+
+                    byte[] data = null;
+
+                    switch (mformat)
+                    {
+                        case MetaFormat.RSC:
+                            {
+                                var meta = XmlMeta.GetMeta(doc);
+                                if ((meta.DataBlocks?.Data == null) || (meta.DataBlocks.Count == 0))
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert Meta XML");
+                                    continue;
+                                }
+                                data = ResourceBuilder.Build(meta, 2); //meta is RSC V:2
+                                break;
+                            }
+                        case MetaFormat.PSO:
+                            {
+                                var pso = XmlPso.GetPso(doc);
+                                if ((pso.DataSection == null) || (pso.DataMapSection == null) || (pso.SchemaSection == null))
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert PSO XML");
+                                    continue;
+                                }
+                                data = pso.Save();
+                                break;
+                            }
+                        case MetaFormat.RBF:
+                            {
+                                var rbf = XmlRbf.GetRbf(doc);
+                                if (rbf.current == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert RBF XML");
+                                    continue;
+                                }
+                                data = rbf.Save();
+                                break;
+                            }
+                        case MetaFormat.AudioRel:
+                            {
+                                var rel = XmlRel.GetRel(doc);
+                                if ((rel.RelDatasSorted == null) || (rel.RelDatas == null))
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert REL XML");
+                                    continue;
+                                }
+                                data = rel.Save();
+                                break;
+                            }
+                        case MetaFormat.Ynd:
+                            {
+                                var ynd = XmlYnd.GetYnd(doc);
+                                if (ynd.NodeDictionary == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YND XML");
+                                    continue;
+                                }
+                                data = ynd.Save();
+                                break;
+                            }
+                        case MetaFormat.Ynv:
+                            {
+                                var ynv = XmlYnv.GetYnv(doc);
+                                if (ynv.Nav == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YNV XML");
+                                    continue;
+                                }
+                                data = ynv.Save();
+                                break;
+                            }
+                        case MetaFormat.Ycd:
+                            {
+                                var ycd = XmlYcd.GetYcd(doc);
+                                if (ycd.ClipDictionary == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YCD XML");
+                                    continue;
+                                }
+                                data = ycd.Save();
+                                break;
+                            }
+                        case MetaFormat.Ybn:
+                            {
+                                var ybn = XmlYbn.GetYbn(doc);
+                                if (ybn.Bounds == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YBN XML");
+                                    continue;
+                                }
+                                data = ybn.Save();
+                                break;
+                            }
+                        case MetaFormat.Ytd:
+                            {
+                                var ytd = XmlYtd.GetYtd(doc, fpathin);
+                                if (ytd.TextureDict == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YTD XML");
+                                    continue;
+                                }
+                                data = ytd.Save();
+                                break;
+                            }
+                        case MetaFormat.Ydr:
+                            {
+                                var ydr = XmlYdr.GetYdr(doc, fpathin);
+                                if (ydr.Drawable == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YDR XML");
+                                    continue;
+                                }
+                                data = ydr.Save();
+                                break;
+                            }
+                        case MetaFormat.Ydd:
+                            {
+                                var ydd = XmlYdd.GetYdd(doc, fpathin);
+                                if (ydd.DrawableDict == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YDD XML");
+                                    continue;
+                                }
+                                data = ydd.Save();
+                                break;
+                            }
+                        case MetaFormat.Yft:
+                            {
+                                var yft = XmlYft.GetYft(doc, fpathin);
+                                if (yft.Fragment == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YFT XML");
+                                    continue;
+                                }
+                                data = yft.Save();
+                                break;
+                            }
+                        case MetaFormat.Ypt:
+                            {
+                                var ypt = XmlYpt.GetYpt(doc, fpathin);
+                                if (ypt.PtfxList == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YPT XML");
+                                    continue;
+                                }
+                                data = ypt.Save();
+                                break;
+                            }
+                        case MetaFormat.Yld:
+                            {
+                                var yld = XmlYld.GetYld(doc, fpathin);
+                                if (yld.ClothDictionary == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert YLD XML");
+                                    continue;
+                                }
+                                data = yld.Save();
+                                break;
+                            }
+                        case MetaFormat.Awc:
+                            {
+                                var awc = XmlAwc.GetAwc(doc, fpathin);
+                                if (awc.Streams == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert AWC XML");
+                                    continue;
+                                }
+                                data = awc.Save();
+                                break;
+                            }
+                        case MetaFormat.CacheFile:
+                            {
+                                var cdf = new CacheDatFile();
+                                //cdf.LoadXml() //TODO!!!
+                                MessageBox.Show(fname + ": CacheFile XML import still TODO!!!", "Cannot import/convert CacheFile XML");
+                                break;
+                            }
+                        case MetaFormat.Heightmap:
+                            {
+                                var hmf = XmlHmap.GetHeightmap(doc);
+                                if (hmf.MaxHeights == null)
+                                {
+                                    MessageBox.Show(fname + ": Schema not supported.", "Cannot import/convert Heightmap XML");
+                                    continue;
+                                }
+                                data = hmf.Save();
+                                break;
+                            }
+                    }
+
+                    if (data != null)
+                    {
+                        var outfpath = Path.Combine(fi.Directory.ToString(), fname);
+                        File.WriteAllBytes(outfpath, data);
+                    }
+                }
+#if !DEBUG
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Unable to convert file");
+                }
+#endif
+            }
         }
 
     }
