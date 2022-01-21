@@ -106,7 +106,7 @@ namespace CodeWalker
         object markersortedsyncroot = new object();
 
 
-
+        Minimap Minimap = new Minimap();
         
 
 
@@ -236,6 +236,7 @@ namespace CodeWalker
                 return;
             }
 
+            Minimap.Init(Renderer.DXMan.d2dContext, Renderer.DXMan, camera);
 
             MouseWheel += WorldForm_MouseWheel;
 
@@ -369,6 +370,8 @@ namespace CodeWalker
         {
             formopen = false;
 
+            Minimap.Cleanup();
+
             Renderer.DeviceDestroyed();
 
             if (Icons != null)
@@ -388,6 +391,7 @@ namespace CodeWalker
         }
         public void BuffersResized(int w, int h)
         {
+            Minimap.Resize(Renderer.DXMan);
             Renderer.BuffersResized(w, h);
         }
         public void RenderScene(DeviceContext context)
@@ -458,6 +462,9 @@ namespace CodeWalker
             RenderMarkers();
 
             RenderWidgets();
+
+            Minimap.Update(camera);
+            Minimap.Render(camera);
 
             Renderer.EndRender();
 
