@@ -105,6 +105,11 @@
             this.ToolsPanelShowButton = new System.Windows.Forms.Button();
             this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.FolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.OptionsCameraTabPage = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.CameraSmoothingUpDown = new System.Windows.Forms.NumericUpDown();
+            this.CameraSensitivityUpDown = new System.Windows.Forms.NumericUpDown();
             this.StatusStrip.SuspendLayout();
             this.ConsolePanel.SuspendLayout();
             this.ToolsPanel.SuspendLayout();
@@ -119,6 +124,9 @@
             this.OptionsRenderTabPage.SuspendLayout();
             this.OptionsLightingTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeOfDayTrackBar)).BeginInit();
+            this.OptionsCameraTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CameraSmoothingUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CameraSensitivityUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // StatsUpdateTimer
@@ -544,6 +552,7 @@
             // 
             this.OptionsTabControl.Controls.Add(this.OptionsRenderTabPage);
             this.OptionsTabControl.Controls.Add(this.OptionsLightingTabPage);
+            this.OptionsTabControl.Controls.Add(this.OptionsCameraTabPage);
             this.OptionsTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OptionsTabControl.Location = new System.Drawing.Point(0, 0);
             this.OptionsTabControl.Name = "OptionsTabControl";
@@ -969,6 +978,66 @@
             // 
             this.SaveFileDialog.Filter = "All files|*.*";
             // 
+            // OptionsCameraTabPage
+            // 
+            this.OptionsCameraTabPage.Controls.Add(this.label3);
+            this.OptionsCameraTabPage.Controls.Add(this.label4);
+            this.OptionsCameraTabPage.Controls.Add(this.CameraSmoothingUpDown);
+            this.OptionsCameraTabPage.Controls.Add(this.CameraSensitivityUpDown);
+            this.OptionsCameraTabPage.Location = new System.Drawing.Point(4, 22);
+            this.OptionsCameraTabPage.Name = "OptionsCameraTabPage";
+            this.OptionsCameraTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.OptionsCameraTabPage.Size = new System.Drawing.Size(233, 474);
+            this.OptionsCameraTabPage.TabIndex = 2;
+            this.OptionsCameraTabPage.Text = "Camera";
+            this.OptionsCameraTabPage.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(17, 40);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(97, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Camera smoothing:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(17, 14);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Camera sensitivity:";
+            // 
+            // CameraSmoothingUpDown
+            // 
+            this.CameraSmoothingUpDown.DecimalPlaces = 1;
+            this.CameraSmoothingUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.CameraSmoothingUpDown.Location = new System.Drawing.Point(127, 38);
+            this.CameraSmoothingUpDown.Name = "CameraSmoothingUpDown";
+            this.CameraSmoothingUpDown.Size = new System.Drawing.Size(77, 20);
+            this.CameraSmoothingUpDown.TabIndex = 11;
+            this.CameraSmoothingUpDown.ValueChanged += new System.EventHandler(this.CameraSmoothingUpDown_ValueChanged);
+            // 
+            // CameraSensitivityUpDown
+            // 
+            this.CameraSensitivityUpDown.DecimalPlaces = 1;
+            this.CameraSensitivityUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.CameraSensitivityUpDown.Location = new System.Drawing.Point(127, 12);
+            this.CameraSensitivityUpDown.Name = "CameraSensitivityUpDown";
+            this.CameraSensitivityUpDown.Size = new System.Drawing.Size(77, 20);
+            this.CameraSensitivityUpDown.TabIndex = 10;
+            this.CameraSensitivityUpDown.ValueChanged += new System.EventHandler(this.CameraSensitivityUpDown_ValueChanged);
+            // 
             // ModelForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1011,6 +1080,10 @@
             this.OptionsLightingTabPage.ResumeLayout(false);
             this.OptionsLightingTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeOfDayTrackBar)).EndInit();
+            this.OptionsCameraTabPage.ResumeLayout(false);
+            this.OptionsCameraTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CameraSmoothingUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CameraSensitivityUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1093,5 +1166,10 @@
         private System.Windows.Forms.ToolStripMenuItem SaveAllTexturesMenuButton;
         private System.Windows.Forms.ToolStripMenuItem SaveSharedTexturesMenuButton;
         private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
+        private System.Windows.Forms.TabPage OptionsCameraTabPage;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown CameraSmoothingUpDown;
+        private System.Windows.Forms.NumericUpDown CameraSensitivityUpDown;
     }
 }
