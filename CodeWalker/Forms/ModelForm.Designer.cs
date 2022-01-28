@@ -100,11 +100,6 @@
             this.ControlLightDirCheckBox = new System.Windows.Forms.CheckBox();
             this.SkydomeCheckBox = new System.Windows.Forms.CheckBox();
             this.TimeOfDayLabel = new System.Windows.Forms.Label();
-            this.OptionsCameraTabPage = new System.Windows.Forms.TabPage();
-            this.CameraSmoothingUpDown = new System.Windows.Forms.NumericUpDown();
-            this.CameraSensitivityUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
             this.ToolsPanelHideButton = new System.Windows.Forms.Button();
             this.ToolsDragPanel = new System.Windows.Forms.Panel();
             this.ToolsPanelShowButton = new System.Windows.Forms.Button();
@@ -124,9 +119,6 @@
             this.OptionsRenderTabPage.SuspendLayout();
             this.OptionsLightingTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeOfDayTrackBar)).BeginInit();
-            this.OptionsCameraTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CameraSmoothingUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CameraSensitivityUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // StatsUpdateTimer
@@ -552,7 +544,6 @@
             // 
             this.OptionsTabControl.Controls.Add(this.OptionsRenderTabPage);
             this.OptionsTabControl.Controls.Add(this.OptionsLightingTabPage);
-            this.OptionsTabControl.Controls.Add(this.OptionsCameraTabPage);
             this.OptionsTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OptionsTabControl.Location = new System.Drawing.Point(0, 0);
             this.OptionsTabControl.Name = "OptionsTabControl";
@@ -941,66 +932,6 @@
             this.TimeOfDayLabel.TabIndex = 5;
             this.TimeOfDayLabel.Text = "12:00";
             // 
-            // OptionsCameraTabPage
-            // 
-            this.OptionsCameraTabPage.Controls.Add(this.label23);
-            this.OptionsCameraTabPage.Controls.Add(this.label24);
-            this.OptionsCameraTabPage.Controls.Add(this.CameraSmoothingUpDown);
-            this.OptionsCameraTabPage.Controls.Add(this.CameraSensitivityUpDown);
-            this.OptionsCameraTabPage.Location = new System.Drawing.Point(4, 22);
-            this.OptionsCameraTabPage.Name = "OptionsCameraTabPage";
-            this.OptionsCameraTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.OptionsCameraTabPage.Size = new System.Drawing.Size(233, 474);
-            this.OptionsCameraTabPage.TabIndex = 1;
-            this.OptionsCameraTabPage.Text = "Camera";
-            this.OptionsCameraTabPage.UseVisualStyleBackColor = true;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(6, 56 - 12);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(97, 13);
-            this.label23.TabIndex = 3;
-            this.label23.Text = "Camera smoothing:";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(6, 30 - 12);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(94, 13);
-            this.label24.TabIndex = 2;
-            this.label24.Text = "Camera sensitivity:";
-            // 
-            // CameraSmoothingUpDown
-            // 
-            this.CameraSmoothingUpDown.DecimalPlaces = 1;
-            this.CameraSmoothingUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.CameraSmoothingUpDown.Location = new System.Drawing.Point(116, 54 - 12);
-            this.CameraSmoothingUpDown.Name = "CameraSmoothingUpDown";
-            this.CameraSmoothingUpDown.Size = new System.Drawing.Size(77, 20);
-            this.CameraSmoothingUpDown.TabIndex = 1;
-            this.CameraSmoothingUpDown.ValueChanged += new System.EventHandler(this.CameraSmoothingUpDown_ValueChanged);
-            // 
-            // CameraSensitivityUpDown
-            // 
-            this.CameraSensitivityUpDown.DecimalPlaces = 1;
-            this.CameraSensitivityUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.CameraSensitivityUpDown.Location = new System.Drawing.Point(116, 28 - 12);
-            this.CameraSensitivityUpDown.Name = "CameraSensitivityUpDown";
-            this.CameraSensitivityUpDown.Size = new System.Drawing.Size(77, 20);
-            this.CameraSensitivityUpDown.TabIndex = 2;
-            this.CameraSensitivityUpDown.ValueChanged += new System.EventHandler(this.CameraSensitivityUpDown_ValueChanged);
-            // 
             // ToolsPanelHideButton
             // 
             this.ToolsPanelHideButton.Location = new System.Drawing.Point(3, 3);
@@ -1080,10 +1011,6 @@
             this.OptionsLightingTabPage.ResumeLayout(false);
             this.OptionsLightingTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeOfDayTrackBar)).EndInit();
-            this.OptionsCameraTabPage.ResumeLayout(false);
-            this.OptionsCameraTabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CameraSmoothingUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CameraSensitivityUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1152,11 +1079,6 @@
         private System.Windows.Forms.TabControl OptionsTabControl;
         private System.Windows.Forms.TabPage OptionsRenderTabPage;
         private System.Windows.Forms.TabPage OptionsLightingTabPage;
-        private System.Windows.Forms.NumericUpDown CameraSensitivityUpDown;
-        private System.Windows.Forms.NumericUpDown CameraSmoothingUpDown;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TabPage OptionsCameraTabPage;
         private System.Windows.Forms.CheckBox HDLightsCheckBox;
         private System.Windows.Forms.CheckBox DeferredShadingCheckBox;
         private System.Windows.Forms.ToolStripButton ToolbarMaterialEditorButton;
