@@ -938,5 +938,17 @@ namespace CodeWalker.Properties {
                 this["ZoomFadeEffect"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FocusOnSelect {
+            get {
+                return ((bool)(this["FocusOnSelect"]));
+            }
+            set {
+                this["FocusOnSelect"] = value;
+            }
+        }
     }
 }

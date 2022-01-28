@@ -229,8 +229,8 @@ namespace CodeWalker.Forms
             camera.FollowEntity = camEntity;
             camera.FollowEntity.Position = prevworldpos;
             camera.FollowEntity.Orientation = Quaternion.LookAtLH(Vector3.Zero, Vector3.Up, Vector3.ForwardLH);
-            camera.TargetDistance = 2.0f;
-            camera.CurrentDistance = 2.0f;
+            camera.TargetDistance = camera.PastDistance;
+            camera.CurrentDistance = camera.PastDistance;
             camera.MovementSpeed = 4.0f;
             camera.TargetRotation.Y = 0.2f;
             camera.CurrentRotation.Y = 0.2f;
@@ -452,6 +452,7 @@ namespace CodeWalker.Forms
             AnisotropicFilteringCheckBox.Checked = s.AnisotropicFiltering;
             CameraSensitivityUpDown.Value = (decimal)camSensitivity * 1000;
             CameraSmoothingUpDown.Value = (decimal)camSmoothing;
+            FocusCheckBox.Checked = s.FocusOnSelect;
             //ErrorConsoleCheckBox.Checked = s.ShowErrorConsole;
             //StatusBarCheckBox.Checked = s.ShowStatusBar;
         }
@@ -461,6 +462,7 @@ namespace CodeWalker.Forms
         {
             Settings.Default.CameraSensitivity = camSensitivity;
             Settings.Default.CameraSmoothing = camSmoothing;
+            Settings.Default.FocusOnSelect = FocusCheckBox.Checked;
             Settings.Default.Save();
         }
 
@@ -1063,6 +1065,7 @@ namespace CodeWalker.Forms
             if (camera.IsOrbit && !movevec.IsZero)
             {
                 camera.IsOrbit = false;
+                camera.PastDistance = camera.CurrentDistance;
                 camera.TargetDistance = 0.0f;
                 camera.CurrentDistance = 0.0f;
                 camEntity.Position = camera.Position;
@@ -2401,6 +2404,22 @@ namespace CodeWalker.Forms
         private void ModelsTreeView_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true; //stops annoying ding sound...
+        }
+
+        private void ModelsTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node != null && FocusCheckBox.Checked)
+            {
+                DrawableGeometry geo = e.Node.Tag as DrawableGeometry;
+                if (geo != null)
+                {
+                    var vecMin = geo.AABB.Min;
+                    var vecMax = geo.AABB.Max;
+                    Vector4 center = (vecMin) + (0.5f * (vecMax - vecMin));
+
+                    MoveCameraToView((Vector3)center, camera.PastDistance / 1.6f);
+                }
+            }
         }
 
         private void HDRRenderingCheckBox_CheckedChanged(object sender, EventArgs e)
