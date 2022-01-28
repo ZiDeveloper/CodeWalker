@@ -100,16 +100,17 @@
             this.ControlLightDirCheckBox = new System.Windows.Forms.CheckBox();
             this.SkydomeCheckBox = new System.Windows.Forms.CheckBox();
             this.TimeOfDayLabel = new System.Windows.Forms.Label();
-            this.ToolsPanelHideButton = new System.Windows.Forms.Button();
-            this.ToolsDragPanel = new System.Windows.Forms.Panel();
-            this.ToolsPanelShowButton = new System.Windows.Forms.Button();
-            this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.FolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.OptionsCameraTabPage = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.CameraSmoothingUpDown = new System.Windows.Forms.NumericUpDown();
             this.CameraSensitivityUpDown = new System.Windows.Forms.NumericUpDown();
+            this.ToolsPanelHideButton = new System.Windows.Forms.Button();
+            this.ToolsDragPanel = new System.Windows.Forms.Panel();
+            this.ToolsPanelShowButton = new System.Windows.Forms.Button();
+            this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.FolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.FocusCheckBox = new System.Windows.Forms.CheckBox();
             this.StatusStrip.SuspendLayout();
             this.ConsolePanel.SuspendLayout();
             this.ToolsPanel.SuspendLayout();
@@ -467,6 +468,7 @@
             this.ModelsTreeView.Size = new System.Drawing.Size(241, 422);
             this.ModelsTreeView.TabIndex = 1;
             this.ModelsTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.ModelsTreeView_AfterCheck);
+            this.ModelsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ModelsTreeView_AfterSelect);
             this.ModelsTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.ModelsTreeView_NodeMouseDoubleClick);
             this.ModelsTreeView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ModelsTreeView_KeyPress);
             // 
@@ -941,45 +943,9 @@
             this.TimeOfDayLabel.TabIndex = 5;
             this.TimeOfDayLabel.Text = "12:00";
             // 
-            // ToolsPanelHideButton
-            // 
-            this.ToolsPanelHideButton.Location = new System.Drawing.Point(3, 3);
-            this.ToolsPanelHideButton.Name = "ToolsPanelHideButton";
-            this.ToolsPanelHideButton.Size = new System.Drawing.Size(30, 23);
-            this.ToolsPanelHideButton.TabIndex = 0;
-            this.ToolsPanelHideButton.Text = "<<";
-            this.ToolsPanelHideButton.UseVisualStyleBackColor = true;
-            this.ToolsPanelHideButton.Click += new System.EventHandler(this.ToolsPanelHideButton_Click);
-            // 
-            // ToolsDragPanel
-            // 
-            this.ToolsDragPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ToolsDragPanel.Cursor = System.Windows.Forms.Cursors.VSplit;
-            this.ToolsDragPanel.Location = new System.Drawing.Point(251, 0);
-            this.ToolsDragPanel.Name = "ToolsDragPanel";
-            this.ToolsDragPanel.Size = new System.Drawing.Size(4, 559);
-            this.ToolsDragPanel.TabIndex = 17;
-            this.ToolsDragPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ToolsDragPanel_MouseDown);
-            this.ToolsDragPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ToolsDragPanel_MouseMove);
-            this.ToolsDragPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ToolsDragPanel_MouseUp);
-            // 
-            // ToolsPanelShowButton
-            // 
-            this.ToolsPanelShowButton.Location = new System.Drawing.Point(15, 15);
-            this.ToolsPanelShowButton.Name = "ToolsPanelShowButton";
-            this.ToolsPanelShowButton.Size = new System.Drawing.Size(30, 23);
-            this.ToolsPanelShowButton.TabIndex = 0;
-            this.ToolsPanelShowButton.Text = ">>";
-            this.ToolsPanelShowButton.UseVisualStyleBackColor = true;
-            this.ToolsPanelShowButton.Click += new System.EventHandler(this.ToolsPanelShowButton_Click);
-            // 
-            // SaveFileDialog
-            // 
-            this.SaveFileDialog.Filter = "All files|*.*";
-            // 
             // OptionsCameraTabPage
             // 
+            this.OptionsCameraTabPage.Controls.Add(this.FocusCheckBox);
             this.OptionsCameraTabPage.Controls.Add(this.label3);
             this.OptionsCameraTabPage.Controls.Add(this.label4);
             this.OptionsCameraTabPage.Controls.Add(this.CameraSmoothingUpDown);
@@ -1037,6 +1003,53 @@
             this.CameraSensitivityUpDown.Size = new System.Drawing.Size(77, 20);
             this.CameraSensitivityUpDown.TabIndex = 10;
             this.CameraSensitivityUpDown.ValueChanged += new System.EventHandler(this.CameraSensitivityUpDown_ValueChanged);
+            // 
+            // ToolsPanelHideButton
+            // 
+            this.ToolsPanelHideButton.Location = new System.Drawing.Point(3, 3);
+            this.ToolsPanelHideButton.Name = "ToolsPanelHideButton";
+            this.ToolsPanelHideButton.Size = new System.Drawing.Size(30, 23);
+            this.ToolsPanelHideButton.TabIndex = 0;
+            this.ToolsPanelHideButton.Text = "<<";
+            this.ToolsPanelHideButton.UseVisualStyleBackColor = true;
+            this.ToolsPanelHideButton.Click += new System.EventHandler(this.ToolsPanelHideButton_Click);
+            // 
+            // ToolsDragPanel
+            // 
+            this.ToolsDragPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ToolsDragPanel.Cursor = System.Windows.Forms.Cursors.VSplit;
+            this.ToolsDragPanel.Location = new System.Drawing.Point(251, 0);
+            this.ToolsDragPanel.Name = "ToolsDragPanel";
+            this.ToolsDragPanel.Size = new System.Drawing.Size(4, 559);
+            this.ToolsDragPanel.TabIndex = 17;
+            this.ToolsDragPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ToolsDragPanel_MouseDown);
+            this.ToolsDragPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ToolsDragPanel_MouseMove);
+            this.ToolsDragPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ToolsDragPanel_MouseUp);
+            // 
+            // ToolsPanelShowButton
+            // 
+            this.ToolsPanelShowButton.Location = new System.Drawing.Point(15, 15);
+            this.ToolsPanelShowButton.Name = "ToolsPanelShowButton";
+            this.ToolsPanelShowButton.Size = new System.Drawing.Size(30, 23);
+            this.ToolsPanelShowButton.TabIndex = 0;
+            this.ToolsPanelShowButton.Text = ">>";
+            this.ToolsPanelShowButton.UseVisualStyleBackColor = true;
+            this.ToolsPanelShowButton.Click += new System.EventHandler(this.ToolsPanelShowButton_Click);
+            // 
+            // SaveFileDialog
+            // 
+            this.SaveFileDialog.Filter = "All files|*.*";
+            // 
+            // FocusCheckBox
+            // 
+            this.FocusCheckBox.AutoSize = true;
+            this.FocusCheckBox.Location = new System.Drawing.Point(20, 73);
+            this.FocusCheckBox.Name = "FocusCheckBox";
+            this.FocusCheckBox.Size = new System.Drawing.Size(159, 17);
+            this.FocusCheckBox.TabIndex = 12;
+            this.FocusCheckBox.Text = "Focus object when selected";
+            this.FocusCheckBox.UseVisualStyleBackColor = true;
             // 
             // ModelForm
             // 
@@ -1171,5 +1184,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown CameraSmoothingUpDown;
         private System.Windows.Forms.NumericUpDown CameraSensitivityUpDown;
+        private System.Windows.Forms.CheckBox FocusCheckBox;
     }
 }
