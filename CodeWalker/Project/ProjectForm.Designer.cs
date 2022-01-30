@@ -164,6 +164,7 @@
             this.ToolsNavMeshGeneratorMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolsImportMenyooXmlMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolsConvertCodeWalkerXMLMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsRenderGtavMapMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsRenderProjectItemsMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -1273,7 +1274,8 @@
             this.ToolsLODLightsGeneratorMenu,
             this.ToolsNavMeshGeneratorMenu,
             this.toolStripSeparator2,
-            this.ToolsImportMenyooXmlMenu});
+            this.ToolsImportMenyooXmlMenu,
+            this.ToolsConvertCodeWalkerXMLMenu});
             this.ToolsMenu.Name = "ToolsMenu";
             this.ToolsMenu.Size = new System.Drawing.Size(46, 20);
             this.ToolsMenu.Text = "Tools";
@@ -1310,6 +1312,13 @@
             this.ToolsImportMenyooXmlMenu.Size = new System.Drawing.Size(196, 22);
             this.ToolsImportMenyooXmlMenu.Text = "Import Menyoo XML...";
             this.ToolsImportMenyooXmlMenu.Click += new System.EventHandler(this.ToolsImportMenyooXmlMenu_Click);
+            // 
+            // ToolsConvertCodeWalkerXMLMenu
+            // 
+            this.ToolsConvertCodeWalkerXMLMenu.Name = "ToolsConvertCodeWalkerXMLMenu";
+            this.ToolsConvertCodeWalkerXMLMenu.Size = new System.Drawing.Size(196, 22);
+            this.ToolsConvertCodeWalkerXMLMenu.Text = "Convert CodeWalker XML...";
+            this.ToolsConvertCodeWalkerXMLMenu.Click += new System.EventHandler(this.ToolsConvertCodeWalkerXMLMenu_Click);
             // 
             // OptionsMenu
             // 
@@ -1716,6 +1725,7 @@
         private System.Windows.Forms.ToolStripMenuItem OptionsRenderProjectItemsMenu;
         private System.Windows.Forms.ToolStripMenuItem ToolsMenu;
         private System.Windows.Forms.ToolStripMenuItem ToolsImportMenyooXmlMenu;
+        private System.Windows.Forms.ToolStripMenuItem ToolsConvertCodeWalkerXMLMenu;
         private WeifenLuo.WinFormsUI.Docking.DockPanel MainDockPanel;
         private System.Windows.Forms.ToolStripMenuItem ViewMenu;
         private System.Windows.Forms.ToolStripMenuItem ViewProjectExplorerMenu;

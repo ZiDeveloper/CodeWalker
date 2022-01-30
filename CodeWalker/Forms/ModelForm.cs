@@ -26,6 +26,9 @@ namespace CodeWalker.Forms
 
         private Renderer Renderer = null;
 
+        private float camSensitivity = Settings.Default.CameraSensitivity;
+        private float camSmoothing = Settings.Default.CameraSmoothing;
+
 
         volatile bool formopen = false;
         //volatile bool running = false;
@@ -226,12 +229,15 @@ namespace CodeWalker.Forms
             camera.FollowEntity = camEntity;
             camera.FollowEntity.Position = prevworldpos;
             camera.FollowEntity.Orientation = Quaternion.LookAtLH(Vector3.Zero, Vector3.Up, Vector3.ForwardLH);
-            camera.TargetDistance = 2.0f;
-            camera.CurrentDistance = 2.0f;
+            camera.TargetDistance = camera.PastDistance;
+            camera.CurrentDistance = camera.PastDistance;
+            camera.MovementSpeed = 4.0f;
             camera.TargetRotation.Y = 0.2f;
             camera.CurrentRotation.Y = 0.2f;
             camera.TargetRotation.X = 0.5f * (float)Math.PI;
             camera.CurrentRotation.X = 0.5f * (float)Math.PI;
+            camera.Sensitivity = camSensitivity;
+            camera.Smoothness = camSmoothing;
 
             Renderer.shaders.deferred = false; //no point using this here yet
 
@@ -305,6 +311,8 @@ namespace CodeWalker.Forms
         }
         public bool ConfirmQuit()
         {
+            SaveCameraSettings();
+
             return true;
         }
 
@@ -442,11 +450,21 @@ namespace CodeWalker.Forms
             TextureSamplerComboBox.SelectedIndex = Math.Max(TextureSamplerComboBox.FindString(s.RenderTextureSampler), 0);
             TextureCoordsComboBox.SelectedIndex = Math.Max(TextureCoordsComboBox.FindString(s.RenderTextureSamplerCoord), 0);
             AnisotropicFilteringCheckBox.Checked = s.AnisotropicFiltering;
+            CameraSensitivityUpDown.Value = (decimal)camSensitivity * 1000;
+            CameraSmoothingUpDown.Value = (decimal)camSmoothing;
+            FocusCheckBox.Checked = s.FocusOnSelect;
             //ErrorConsoleCheckBox.Checked = s.ShowErrorConsole;
             //StatusBarCheckBox.Checked = s.ShowStatusBar;
         }
 
 
+        private void SaveCameraSettings()
+        {
+            Settings.Default.CameraSensitivity = camSensitivity;
+            Settings.Default.CameraSmoothing = camSmoothing;
+            Settings.Default.FocusOnSelect = FocusCheckBox.Checked;
+            Settings.Default.Save();
+        }
 
 
 
@@ -459,6 +477,7 @@ namespace CodeWalker.Forms
             camera.FollowEntity.Position = pos;
             camera.TargetDistance = rad * 1.6f;
             camera.CurrentDistance = rad * 1.6f;
+            camera.IsOrbit = true;
 
             camera.UpdateProj = true;
         }
@@ -1042,6 +1061,16 @@ namespace CodeWalker.Forms
 
             Vector3 movevec = Input.KeyboardMoveVec(false);
 
+            // Exit Orbit when moving
+            if (camera.IsOrbit && !movevec.IsZero)
+            {
+                camera.IsOrbit = false;
+                camera.PastDistance = camera.CurrentDistance;
+                camera.TargetDistance = 0.0f;
+                camera.CurrentDistance = 0.0f;
+                camEntity.Position = camera.Position;
+            }
+
             if (Input.xbenable)
             {
                 movevec.X += Input.xblx;
@@ -1065,8 +1094,12 @@ namespace CodeWalker.Forms
             //}
             //else
             {
-                //normal movement
-                movevec *= elapsed * moveSpeed * Math.Min(camera.TargetDistance, 50.0f);
+                // Don't move when in Orbit
+                if (!camera.IsOrbit)
+                {
+                    //normal movement
+                    movevec *= elapsed * moveSpeed * Math.Min(camera.MovementSpeed, 50.0f);
+                }
             }
 
 
@@ -2373,6 +2406,22 @@ namespace CodeWalker.Forms
             e.Handled = true; //stops annoying ding sound...
         }
 
+        private void ModelsTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node != null && FocusCheckBox.Checked)
+            {
+                DrawableGeometry geo = e.Node.Tag as DrawableGeometry;
+                if (geo != null)
+                {
+                    var vecMin = geo.AABB.Min;
+                    var vecMax = geo.AABB.Max;
+                    Vector4 center = (vecMin) + (0.5f * (vecMax - vecMin));
+
+                    MoveCameraToView((Vector3)center, camera.PastDistance / 1.6f);
+                }
+            }
+        }
+
         private void HDRRenderingCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             lock (Renderer.RenderSyncRoot)
@@ -2641,6 +2690,20 @@ namespace CodeWalker.Forms
         private void ToolbarScaleButton_Click(object sender, EventArgs e)
         {
             SetWidgetMode(ToolbarScaleButton.Checked ? WidgetMode.Default : WidgetMode.Scale);
+        }
+
+        private void CameraSensitivityUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            camSensitivity = (float)CameraSensitivityUpDown.Value * 0.001f;
+            Settings.Default.CameraSensitivity = camSensitivity;
+            camera.Sensitivity = camSensitivity;
+        }
+
+        private void CameraSmoothingUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            camSmoothing = (float)CameraSmoothingUpDown.Value;
+            Settings.Default.CameraSmoothing = camSmoothing;
+            camera.Smoothness = camSmoothing;
         }
     }
 }
