@@ -4312,17 +4312,19 @@ namespace CodeWalker
                 }
             }
 
-            // Go to Object
-            if (!selPos.IsZero) { GoToPosition(selPos); }
+            BetterGoToPosition(selPos, selZoom);
+        }
 
-            // Enter Orbit
-            if (!camera.IsOrbit) { camera.IsOrbit = true; }
+        private void BetterGoToPosition(Vector3 viewPose, float pZoom)
+        {
+            // Go to View and enter Orbit
+            GoToPosition(viewPose);
 
             // Adjust Zoom
             if (AdjustZoomCheckBox.Checked)
             {
-                camera.TargetDistance = selZoom;
-                if (DisableZoomFadeEffectCheckBox.Checked) { camera.CurrentDistance = selZoom; }
+                camera.TargetDistance = pZoom;
+                if (DisableZoomFadeEffectCheckBox.Checked) { camera.CurrentDistance = pZoom; }
             }
             else
             {
@@ -6110,7 +6112,7 @@ namespace CodeWalker
 
                             if (Input.CtrlPressed)
                             {
-                                SpawnTestEntity();
+                                BetterGoToPosition(GetSpaceMouseRay().Position, 8.0f);
                             }
 
                         }
