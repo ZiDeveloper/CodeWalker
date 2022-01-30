@@ -389,6 +389,7 @@ namespace CodeWalker
         public void BuffersResized(int w, int h)
         {
             Renderer.BuffersResized(w, h);
+            Minimap.Resize(Renderer.DXMan);
         }
         public void RenderScene(DeviceContext context)
         {
@@ -458,6 +459,9 @@ namespace CodeWalker
             RenderMarkers();
 
             RenderWidgets();
+
+            Minimap.Update(Renderer.DXMan, camera, new Vector2(MouseX, MouseY));
+            Minimap.Render();
 
             Renderer.EndRender();
 
@@ -631,17 +635,16 @@ namespace CodeWalker
                     camera.ControllerRotate(Input.xbrx, Input.xbry, elapsed);
                 }
 
-
-
+                float walkSpeed = camera.MovementSpeed;
                 Vector2 movecontrol = new Vector2(Input.xbmainaxes.X, Input.xbmainaxes.Y); //(L stick)
-                if (Input.kbmovelft) movecontrol.X -= 1.0f;
-                if (Input.kbmovergt) movecontrol.X += 1.0f;
-                if (Input.kbmovefwd) movecontrol.Y += 1.0f;
-                if (Input.kbmovebck) movecontrol.Y -= 1.0f;
-                movecontrol.X = Math.Min(movecontrol.X, 1.0f);
-                movecontrol.X = Math.Max(movecontrol.X, -1.0f);
-                movecontrol.Y = Math.Min(movecontrol.Y, 1.0f);
-                movecontrol.Y = Math.Max(movecontrol.Y, -1.0f);
+                if (Input.kbmovelft) movecontrol.X -= walkSpeed;
+                if (Input.kbmovergt) movecontrol.X += walkSpeed;
+                if (Input.kbmovefwd) movecontrol.Y += walkSpeed;
+                if (Input.kbmovebck) movecontrol.Y -= walkSpeed;
+                movecontrol.X = Math.Min(movecontrol.X, walkSpeed);
+                movecontrol.X = Math.Max(movecontrol.X, -walkSpeed);
+                movecontrol.Y = Math.Min(movecontrol.Y, walkSpeed);
+                movecontrol.Y = Math.Max(movecontrol.Y, -walkSpeed);
 
                 Vector3 fwd = camera.ViewDirection;
                 Vector3 fwdxy = Vector3.Normalize(new Vector3(fwd.X, fwd.Y, 0));
@@ -666,7 +669,8 @@ namespace CodeWalker
                 bool fire = mlb || (Input.xbtrigs.Y > 0);
                 if (fire && !ControlFireToggle)
                 {
-                    SpawnTestEntity(true);
+                    // SpawnTestEntity(true);
+                    if (ControlMode != WorldControlMode.Free) SetControlMode(WorldControlMode.Free);
                 }
                 ControlFireToggle = fire;
 
@@ -6349,20 +6353,32 @@ namespace CodeWalker
         {
             if (e.Delta != 0)
             {
-                if (ControlMode == WorldControlMode.Free || ControlBrushEnabled)
+                if (!Minimap.IsHovering)
                 {
-                    camera.MouseZoom(e.Delta);
-                    if (!AdjustZoomCheckBox.Checked && camera.IsOrbit)
+                    if (ControlMode == WorldControlMode.Free || ControlBrushEnabled)
                     {
-                        camera.PastDistance = camera.TargetDistance;
+                        camera.MouseZoom(e.Delta);
+                        if (!AdjustZoomCheckBox.Checked && camera.IsOrbit)
+                        {
+                            camera.PastDistance = camera.TargetDistance;
+                        }
+                    }
+                    else
+                    {
+                        if (ControlMode == WorldControlMode.Ped)
+                        {
+                            float v_inverted = (e.Delta > 0) ? 1.1f : (e.Delta < 0) ? 1.0f / 1.1f : 1.0f;
+                            camera.MovementSpeed *= v_inverted;
+                        }
+                        lock (MouseControlSyncRoot)
+                        {
+                            MouseControlWheel += e.Delta;
+                        }
                     }
                 }
-                else
+                else 
                 {
-                    lock (MouseControlSyncRoot)
-                    {
-                        MouseControlWheel += e.Delta;
-                    }
+                    Minimap.Zoom(e.Delta);
                 }
             }
 
