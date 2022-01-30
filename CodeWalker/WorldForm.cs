@@ -391,7 +391,6 @@ namespace CodeWalker
         }
         public void BuffersResized(int w, int h)
         {
-            Minimap.Resize(Renderer.DXMan);
             Renderer.BuffersResized(w, h);
             Minimap.Resize(Renderer.DXMan);
         }
