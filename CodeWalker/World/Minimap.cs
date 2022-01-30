@@ -4,50 +4,57 @@ using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
+using SharpDX.Direct2D1.Effects;
 using CodeWalker.Rendering;
 using CodeWalker.World;
 
 public class Minimap
 {
-    public Camera camera { get; private set; }
+    private Camera camera;
 
-    public DXManager dxMan { get; private set; }
-    public Bitmap d2dBitmap { get; private set; }
-    public DeviceContext d2dContext { get; private set; }
+    private DXManager dxMan;
+    private Bitmap d2dBitmapMain;
+    private Bitmap d2dBitmapOffscreen;
+    private DeviceContext d2dContext;
 
-    public TextFormat dwFormatMain { get; private set; }
-    public TextFormat dwFormatMapCharacter { get; private set; }
-    public SolidColorBrush d2dMainBrush { get; private set; }
-    public SolidColorBrush d2dSolidWhiteBrush { get; private set; }
-    public SolidColorBrush d2dSolidBlackBrush { get; private set; }
+    private TextFormat dwFormatMain;
+    private TextFormat dwFormatMapCharacter;
+    private SolidColorBrush d2dMainBrush;
+    private SolidColorBrush d2dSolidWhiteBrush;
+    private SolidColorBrush d2dSolidBlackBrush;
+    private Crop d2dCropEffect;
+    private Scale d2dScaleEffect;
 
-    public BitmapProperties1 d2dMaskBitmapProperties { get; private set; }
+    private BitmapProperties1 bitmapProperties1;
 
-    public RawVector2 Position { get; private set; }
+    public RawVector2 Position { get; set; }
     public float WorldOffsetX { get; private set; }
     public float WorldOffsetY { get; private set; }
     public float Radius { get; private set; }
     public float Opacity { get; private set; }
-    public float Scale { get; private set; }
+    public float ZoomScale { get; private set; }
     public float BorderThickness { get; private set; }
     public float WorldToMapFactor { get; private set; }
+    
+    public bool IsHovering { get; private set; }
 
-    public Vector2 North { get; private set; }
-    public float NorthSize { get; private set; }
+    private Vector2 North;
+    private float NorthSize;
     public float Rotation { get; private set; }
 
     public Minimap()
     {
-        Position = new RawVector2(100f, 120f);
+        Position = new RawVector2();
         North = new Vector2();
         NorthSize = 10.0f;
-        Radius = 93.0f;
+        Radius = 93.0f * 1.2f;
         Opacity = 1.0f;
-        Scale = 1.3f;
+        ZoomScale = 1.84f;
         BorderThickness = 7.0f;
         WorldOffsetX = 1870f;
         WorldOffsetY = 3319f;
         WorldToMapFactor = 0.329f;
+        IsHovering = false;
     }
 
     public void Init(DeviceContext pD2DContext, DXManager pDXMan, Camera pCamera)
@@ -63,13 +70,14 @@ public class Minimap
         {
             try
             {
-                d2dBitmap = LoadFromFile(dxMan, d2dContext, "res\\GTAV_ATLUS_4096.png");
+                d2dBitmapMain = LoadFromFile(dxMan, d2dContext, "res\\GTAV_ATLUS_4096.png");
             }
             catch (Exception e)
             { System.Windows.Forms.MessageBox.Show("Faild to load \\res\\GTAV_ATLUS_4096.png: " + e.Message); }
         }).Start();
 
-        d2dMaskBitmapProperties = new BitmapProperties1(new PixelFormat(SharpDX.DXGI.Format.B8G8R8A8_UNorm, AlphaMode.Premultiplied), 96, 96, BitmapOptions.Target);
+        bitmapProperties1 = new BitmapProperties1(new PixelFormat(SharpDX.DXGI.Format.R8G8B8A8_UNorm, AlphaMode.Premultiplied), 96, 96, BitmapOptions.Target);
+        d2dBitmapOffscreen = new Bitmap1(d2dContext, new Size2((int) (Radius * 2), (int) (Radius * 2)), bitmapProperties1);
 
         CreateResources();
     }
@@ -92,6 +100,9 @@ public class Minimap
         d2dMainBrush = new SolidColorBrush(d2dContext, new RawColor4(1f, 1f, 1f, 0.5f));
         d2dSolidWhiteBrush = new SolidColorBrush(d2dContext, new RawColor4(1f, 1f, 1f, Opacity));
         d2dSolidBlackBrush = new SolidColorBrush(d2dContext, new RawColor4(0f, 0f, 0f, Opacity));
+
+        d2dScaleEffect = new Scale(d2dContext);
+        d2dCropEffect = new Crop(d2dContext);
     }
 
     public void DisposeResources()
@@ -101,11 +112,17 @@ public class Minimap
         if (d2dMainBrush != null) { d2dMainBrush.Dispose(); }
         if (d2dSolidWhiteBrush != null) { d2dSolidWhiteBrush.Dispose(); }
         if (d2dSolidBlackBrush != null) { d2dSolidBlackBrush.Dispose(); }
+        if (d2dScaleEffect != null) { d2dScaleEffect.Dispose(); }
+        if (d2dCropEffect != null) { d2dCropEffect.Dispose(); }
     }
 
-    public void Update(Camera pCamera)
+    public void Update(DXManager pDXMan, Camera pCamera, Vector2 pMousePos)
     {
+        dxMan = pDXMan;
+        d2dContext = pDXMan.d2dContext;
         camera = pCamera;
+
+        Position = new RawVector2(4f + Radius, camera.Height - (29f + Radius));
 
         Rotation = (camera.CurrentRotation.X / (float)(2 * Math.PI));
         Rotation -= (int)Rotation;
@@ -114,109 +131,101 @@ public class Minimap
 
         WorldOffsetX = 1262.0f + ((camera.FollowEntity.Position.X + 1874.07f) * WorldToMapFactor);
         WorldOffsetY = 3162.0f - ((camera.FollowEntity.Position.Y + 1213.51f) * WorldToMapFactor);
+
+        // Mouse Hovering
+        if ((Position-pMousePos).Length() <= Radius) { IsHovering = true; } else { IsHovering = false; }
     }
 
-    public void Render(Camera camera)
+    public void Render()
     {
-        if (d2dContext == null || d2dBitmap == null) return;
+        if (d2dContext == null || d2dBitmapMain == null || d2dBitmapOffscreen == null) return;
 
         d2dContext.BeginDraw();
 
-        // Disclaimer
-        d2dContext.DrawText(
-            "Disclaimer: This version of CodeWalker is modified. Use on your one risk.",
-            dwFormatMain,
-            new RectangleF(13, 50, 500, 40),
-            d2dMainBrush);
-
-        // Draw background shape
-        Ellipse backgroundEllipse = new Ellipse(Position, Radius, Radius);
-        backgroundEllipse.Point.Y = (-backgroundEllipse.Point.Y + camera.Height);
-        d2dContext.FillEllipse(backgroundEllipse, d2dSolidWhiteBrush);
-
-        // Draw atlas
-        var MaskBitmap = new Bitmap1(d2dContext, new Size2((int)(Position.X + Radius), (int)camera.Height), d2dMaskBitmapProperties); ;
-
-        d2dContext.Target = MaskBitmap;
-        d2dContext.FillEllipse(new Ellipse(new RawVector2(Position.X, camera.Height - Position.Y), Radius, Radius), d2dSolidWhiteBrush);
-
-        var MaskBrush = new BitmapBrush(d2dContext, MaskBitmap);
-        d2dContext.Target = dxMan.d2dRenderTargetBitmap;
-
-        d2dContext.PushLayer(new LayerParameters1()
-        {
-            ContentBounds = new RawRectangleF(0, 0, (Position.X + Radius), camera.Height),
-            GeometricMask = null,
-            MaskAntialiasMode = AntialiasMode.Aliased,
-            MaskTransform = new Matrix3x2(),
-            Opacity = 1.0f,
-            OpacityBrush = MaskBrush,
-            LayerOptions = LayerOptions1.None
-        }, null);
-
-        d2dContext.Transform = Matrix3x2.Rotation(Deg2Rad(360.0f - Rotation), new Vector2(100.0f, camera.Height - 120.0f));
-        d2dContext.DrawBitmap(
-                d2dBitmap,
-                new RawRectangleF(
-                    Position.X - 96,
-                    camera.Height - Position.Y - 96,
-                    Position.X + 96,
-                    camera.Height - Position.Y + 96),
-                Opacity,
-                BitmapInterpolationMode.Linear,
-                new RawRectangleF(
-                    (-96 * Scale) + WorldOffsetX,
-                    (-96 * Scale) + WorldOffsetY,
-                    (96 * Scale) + WorldOffsetX,
-                    (96 * Scale) + WorldOffsetY));
+        RenderOffscreen(Radius * ZoomScale);
+        
+        // Main
+        d2dContext.Transform = Matrix3x2.Rotation(Deg2Rad(360.0f - Rotation), new Vector2(Position.X, Position.Y));
+        d2dContext.DrawBitmap(d2dBitmapOffscreen, new RawRectangleF(Position.X - Radius, Position.Y - Radius, Position.X + Radius, Position.Y + Radius), Opacity, BitmapInterpolationMode.Linear, new RawRectangleF(0, 0, Radius * 2, Radius * 2));
         d2dContext.Transform = Matrix3x2.Identity;
-        d2dContext.PopLayer();
 
-        MaskBitmap.Dispose();
-        MaskBrush.Dispose();
-
-        // Draw border shape
-        d2dContext.DrawEllipse(backgroundEllipse, d2dSolidBlackBrush, BorderThickness);
-
-        // Draw north shape
-        North = new Vector2(
-            Radius * (float)Math.Cos(Deg2Rad(Rotation - 90.0f)),
-            Radius * (float)Math.Sin(Deg2Rad(Rotation - 90.0f)));
-
-        backgroundEllipse.Point = new RawVector2(Position.X - North.X, -Position.Y + camera.Height + North.Y);
-        backgroundEllipse.RadiusX = NorthSize;
-        backgroundEllipse.RadiusY = NorthSize;
-        d2dContext.FillEllipse(backgroundEllipse, d2dSolidBlackBrush);
-
-        // Draw north character
-        d2dContext.DrawText(
-                "N",
-                dwFormatMapCharacter,
-                new RectangleF(Position.X - North.X - 7, -Position.Y + camera.Height - 14 + North.Y, 2 * NorthSize, 2 * NorthSize),
-                d2dSolidWhiteBrush);
-
-        // Draw player marker
-        backgroundEllipse.Point = new RawVector2(Position.X, camera.Height - Position.Y);
-        backgroundEllipse.RadiusX = 3.0f;
-        backgroundEllipse.RadiusY = 3.0f;
-        d2dSolidWhiteBrush.Color = new RawColor4(0f, 0.65f, 1f, Opacity);
+        // Player Center
+        Ellipse backgroundEllipse = new Ellipse(new RawVector2(Position.X, Position.Y), 3f, 3f);
+        d2dSolidWhiteBrush.Color = Color.Red;
         d2dContext.FillEllipse(backgroundEllipse, d2dSolidWhiteBrush);
         d2dSolidWhiteBrush.Color = Color.White;
 
-        // Draw crosshair ( remove later )
-        backgroundEllipse.Point = new RawVector2(camera.Width / 2, camera.Height / 2);
-        backgroundEllipse.RadiusX = 2.0f;
-        backgroundEllipse.RadiusY = 2.0f;
-        d2dSolidWhiteBrush.Opacity = 0.4f;
-        d2dContext.FillEllipse(backgroundEllipse, d2dSolidWhiteBrush);
-        d2dSolidWhiteBrush.Opacity = Opacity;
+        // Map Border
+        backgroundEllipse.Point = new RawVector2(Position.X, Position.Y);
+        backgroundEllipse.RadiusX = Radius;
+        backgroundEllipse.RadiusY = Radius;
+        d2dContext.DrawEllipse(backgroundEllipse, d2dSolidBlackBrush, BorderThickness);
+
+        // North
+        North = new Vector2(Radius * (float)Math.Cos(Deg2Rad(Rotation - 90.0f)), Radius * (float)Math.Sin(Deg2Rad(Rotation - 90.0f)));
+
+        backgroundEllipse.Point = new RawVector2(Position.X - North.X, Position.Y + North.Y);
+        backgroundEllipse.RadiusX = NorthSize;
+        backgroundEllipse.RadiusY = NorthSize;
+        
+        d2dContext.FillEllipse(backgroundEllipse, d2dSolidBlackBrush);
+        d2dContext.DrawText("N", dwFormatMapCharacter, new RectangleF(Position.X - North.X - BorderThickness,  Position.Y - (BorderThickness*2) + North.Y, 2 * NorthSize, 2 * NorthSize), d2dSolidWhiteBrush);
+
+        // Disclaimer
+        d2dContext.DrawText("Disclaimer: This version of CodeWalker is modified. Use on your one risk.", dwFormatMain, new RectangleF(13, 50, 500, 40), d2dMainBrush);
 
         d2dContext.EndDraw();
     }
 
+    private void RenderOffscreen(float offsetmap) 
+    {
+        // Crop
+        d2dCropEffect.SetInput(0, d2dBitmapMain, true);
+        d2dCropEffect.Rectangle = new RawVector4(WorldOffsetX - offsetmap, WorldOffsetY - offsetmap, WorldOffsetX + offsetmap, WorldOffsetY + offsetmap);
+
+        // Rescale
+        d2dScaleEffect.SetInput(0, d2dCropEffect.Output, true);
+        d2dScaleEffect.CenterPoint = new RawVector2(WorldOffsetX, WorldOffsetY);
+        d2dScaleEffect.ScaleAmount = new RawVector2(Radius / offsetmap, Radius / offsetmap);
+
+        var tempBitmap = new Bitmap1(d2dContext, new Size2((int) (Radius * 2), (int)(Radius * 2)), bitmapProperties1);
+
+        d2dContext.Target = tempBitmap;
+
+        var tempColorBursh = new SolidColorBrush(d2dContext, Color.Black);
+        d2dContext.FillEllipse(new Ellipse(new RawVector2(Radius, Radius), Radius, Radius), tempColorBursh);
+
+        var tempBrush = new BitmapBrush(d2dContext, tempBitmap);
+
+        d2dContext.Target = d2dBitmapOffscreen;
+        d2dContext.Clear(Color.Transparent);
+
+        d2dSolidWhiteBrush.Color = new Color(1f, 1f, 1f, 0.5f);
+        d2dContext.FillEllipse(new Ellipse(new RawVector2(Radius, Radius), Radius, Radius), d2dSolidWhiteBrush);
+        d2dSolidWhiteBrush.Color = new Color(1f, 1f, 1f, Opacity);
+
+        d2dContext.PushLayer(new LayerParameters1()
+        {
+            ContentBounds = new RawRectangleF(0, 0, Radius * 2, Radius * 2),
+            GeometricMask = null,
+            MaskAntialiasMode = AntialiasMode.Aliased,
+            MaskTransform = new Matrix3x2(),
+            Opacity = 1.0f,
+            OpacityBrush = tempBrush,
+            LayerOptions = LayerOptions1.None
+        }, null);
+
+        d2dContext.DrawImage(d2dScaleEffect, new RawVector2(-WorldOffsetX + Radius, (-WorldOffsetY + Radius)), InterpolationMode.NearestNeighbor);
+        d2dContext.PopLayer();
+
+        d2dContext.Target = dxMan.d2dRenderTargetBitmap;
+    }
+
     public void Resize(DXManager pDXMan)
     {
+        dxMan = pDXMan;
         d2dContext = pDXMan.d2dContext;
+
         DisposeResources();
         CreateResources();
     }
@@ -225,9 +234,15 @@ public class Minimap
     {
         DisposeResources();
 
-        if (d2dBitmap != null) { d2dBitmap.Dispose(); }
+        if (d2dBitmapMain != null) { d2dBitmapMain.Dispose(); }
+        if (d2dBitmapOffscreen != null) { d2dBitmapOffscreen.Dispose(); }
     }
 
+    public void Zoom(float delta)
+    {
+        float v = (delta < 0) ? 1.1f : (delta > 0) ? 1.0f / 1.1f : 1.0f;
+        ZoomScale = Math.Max(0.25f, Math.Min(ZoomScale *= v, 20f));
+    }
 
     /// Source: https://stackoverflow.com/a/5200086
     /// <summary>
