@@ -106,7 +106,7 @@ namespace CodeWalker
         object markersortedsyncroot = new object();
 
 
-
+        Minimap Minimap = new Minimap();
         
 
 
