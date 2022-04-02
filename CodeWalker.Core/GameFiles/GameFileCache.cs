@@ -212,10 +212,14 @@ namespace CodeWalker.GameFiles
                 //TestYfts();
                 //TestYpts();
                 //TestYnvs();
+                //TestYvrs();
+                //TestYwrs();
                 //TestYmaps();
+                //TestYpdbs();
                 //TestMrfs();
                 //TestPlacements();
                 //TestDrawables();
+                //TestCacheFiles();
                 //TestHeightmaps();
                 //TestWatermaps();
                 //GetShadersXml();
@@ -3518,6 +3522,15 @@ namespace CodeWalker.GameFiles
                             YedFile yed = new YedFile(rfe);
                             RpfMan.LoadFile(yed, rfe);
 
+                            var xml = YedXml.GetXml(yed);
+                            var yed2 = XmlYed.GetYed(xml);
+                            var data2 = yed2.Save();
+                            var yed3 = new YedFile();
+                            RpfFile.LoadResourceFile(yed3, data2, 25);//full roundtrip
+                            var xml2 = YedXml.GetXml(yed3);
+                            if (xml != xml2)
+                            { }
+
                         }
                     }
 #if !DEBUG
@@ -4396,6 +4409,102 @@ namespace CodeWalker.GameFiles
             if (errorfiles.Count > 0)
             { }
         }
+        public void TestYvrs()
+        {
+
+            var exceptions = new List<Exception>();
+
+            foreach (RpfFile file in AllRpfs)
+            {
+                foreach (RpfEntry entry in file.AllEntries)
+                {
+#if !DEBUG
+                    try
+#endif
+                    {
+                        var rfe = entry as RpfFileEntry;
+                        if (rfe == null) continue;
+
+                        if (rfe.NameLower.EndsWith(".yvr"))
+                        {
+                            if (rfe.NameLower == "agencyprep001.yvr") continue; //this file seems corrupted
+
+                            UpdateStatus(string.Format(entry.Path));
+
+                            YvrFile yvr = new YvrFile(rfe);
+                            RpfMan.LoadFile(yvr, rfe);
+
+                            var xml = YvrXml.GetXml(yvr);
+                            var yvr2 = XmlYvr.GetYvr(xml);
+                            var data2 = yvr2.Save();
+                            var yvr3 = new YvrFile();
+                            RpfFile.LoadResourceFile(yvr3, data2, 1);//full roundtrip
+                            var xml2 = YvrXml.GetXml(yvr3);
+                            if (xml != xml2)
+                            { }
+
+                        }
+                    }
+#if !DEBUG
+                    catch (Exception ex)
+                    {
+                        UpdateStatus("Error! " + ex.ToString());
+                        exceptions.Add(ex);
+                    }
+#endif
+                }
+            }
+
+            if (exceptions.Count > 0)
+            { }
+        }
+        public void TestYwrs()
+        {
+
+            var exceptions = new List<Exception>();
+
+            foreach (RpfFile file in AllRpfs)
+            {
+                foreach (RpfEntry entry in file.AllEntries)
+                {
+#if !DEBUG
+                    try
+#endif
+                    {
+                        var rfe = entry as RpfFileEntry;
+                        if (rfe == null) continue;
+
+                        if (rfe.NameLower.EndsWith(".ywr"))
+                        {
+                            UpdateStatus(string.Format(entry.Path));
+
+                            YwrFile ywr = new YwrFile(rfe);
+                            RpfMan.LoadFile(ywr, rfe);
+
+                            var xml = YwrXml.GetXml(ywr);
+                            var ywr2 = XmlYwr.GetYwr(xml);
+                            var data2 = ywr2.Save();
+                            var ywr3 = new YwrFile();
+                            RpfFile.LoadResourceFile(ywr3, data2, 1);//full roundtrip
+                            var xml2 = YwrXml.GetXml(ywr3);
+                            if (xml != xml2)
+                            { }
+
+                        }
+                    }
+#if !DEBUG
+                    catch (Exception ex)
+                    {
+                        UpdateStatus("Error! " + ex.ToString());
+                        exceptions.Add(ex);
+                    }
+#endif
+                }
+            }
+
+            if (exceptions.Count > 0)
+            { }
+        }
         public void TestYmaps()
         {
             foreach (RpfFile file in AllRpfs)
@@ -4416,6 +4525,53 @@ namespace CodeWalker.GameFiles
                     {
                         UpdateStatus("Error! " + ex.ToString());
                     }
+                }
+            }
+        }
+        public void TestYpdbs()
+        {
+            foreach (RpfFile file in AllRpfs)
+            {
+                foreach (RpfEntry entry in file.AllEntries)
+                {
+                    var rfe = entry as RpfFileEntry;
+                    if (rfe == null) continue;
+
+                    try
+                    {
+                        if (rfe.NameLower.EndsWith(".ypdb"))
+                        {
+                            UpdateStatus(string.Format(entry.Path));
+                            YpdbFile ypdb = RpfMan.GetFile<YpdbFile>(entry);
+                            if (ypdb != null)
+                            {
+                                var odata = entry.File.ExtractFile(entry as RpfFileEntry);
+                                //var ndata = ypdb.Save();
+
+                                var xml = YpdbXml.GetXml(ypdb);
+                                var ypdb2 = XmlYpdb.GetYpdb(xml);
+                                var ndata = ypdb2.Save();
+
+                                if (ndata.Length == odata.Length)
+                                {
+                                    for (int i = 0; i < ndata.Length; i++)
+                                    {
+                                        if (ndata[i] != odata[i])
+                                        { break; }
+                                    }
+                                }
+                                else
+                                { }
+                            }
+                            else
+                            { }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        UpdateStatus("Error! " + ex.ToString());
+                    }
+
                 }
             }
         }
@@ -4803,6 +4959,49 @@ namespace CodeWalker.GameFiles
 
             UpdateStatus((DateTime.Now - starttime).ToString() + " elapsed, " + drawablecount.ToString() + " drawables, " + errs.Count.ToString() + " errors.");
 
+        }
+        public void TestCacheFiles()
+        {
+            foreach (RpfFile file in AllRpfs)
+            {
+                foreach (RpfEntry entry in file.AllEntries)
+                {
+                    try
+                    {
+                        if (entry.NameLower.EndsWith("cache_y.dat"))// || entry.NameLower.EndsWith("cache_y_bank.dat"))
+                        {
+                            UpdateStatus(string.Format(entry.Path));
+                            var cdfile = RpfMan.GetFile<CacheDatFile>(entry);
+                            if (cdfile != null)
+                            {
+                                var odata = entry.File.ExtractFile(entry as RpfFileEntry);
+                                //var ndata = cdfile.Save();
+
+                                var xml = CacheDatXml.GetXml(cdfile);
+                                var cdf2 = XmlCacheDat.GetCacheDat(xml);
+                                var ndata = cdf2.Save();
+
+                                if (ndata.Length == odata.Length)
+                                {
+                                    for (int i = 0; i < ndata.Length; i++)
+                                    {
+                                        if (ndata[i] != odata[i])
+                                        { break; }
+                                    }
+                                }
+                                else
+                                { }
+                            }
+                            else
+                            { }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        UpdateStatus("Error! " + ex.ToString());
+                    }
+                }
+            }
         }
         public void TestHeightmaps()
         {
